@@ -16,44 +16,35 @@ public class MainManeger : MonoBehaviour
     CreateClass CrC;
     RandomCuisine RC;
     InstantiateImageBox IIB;
-    TransformImageBox TIM;
+    TransformImageBox TIB;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        CreateClassStart();
+        CreateClassStart();//食材クラスと料理クラスの生成
 
-        DecisionCooking();
+        DecisionCooking();//作る料理の決定
 
-
-
-        //料理を入れておくimageの作成
-        IIB = GetComponent<InstantiateImageBox>();
-        IIB.CreateImageBox();
-        ImageBox = IIB.GetImageBox();//同時にボックスの生成から初期位置への配置までを行う
-        /*//debug
-        ImageBox[0, 0].SetActive(false);
-        */
+        CreateImageBox();//動かすImageBoxの生成
 
 
-        TIM = GetComponent<TransformImageBox>();
+
+
+
+        TIB = GetComponent<TransformImageBox>();
     }
-
-    private bool SetUp = true;//updateで一回だけ呼び出す
+    
     void Update()
     {
-        if (SetUp)//updateで一回のみ呼び出したいループ類似処理
-        {
-            TIM.SetUp(ImageBox);
 
-        }
-        TIM.RollmageBox(ImageBox);//アイテムを移動させる
+
+        TIB.RollmageBox(ImageBox);//ImageBoxを移動させる
 
 
     }
 
-    private void CreateClassStart()
+    private void CreateClassStart()//食材クラスと料理クラスの生成
     {
         CrC = GetComponent<CreateClass>();//同オブジェクトにアタッチされたCreateClassを取得
 
@@ -62,17 +53,32 @@ public class MainManeger : MonoBehaviour
         CC = CrC.C;
         FS = CrC.FS;
 
+        /*
         Debug.Log(this.CC[0].CuisineName);
         Debug.Log(this.CC.GetLength(0));
         Debug.Log(this.FS[0].Name);
         Debug.Log(this.FS[2].Name);
         Debug.Log(this.FS[7].Name);
+        */
     }
 
-    private void DecisionCooking()
+    private void DecisionCooking()//作る料理の決定
     {
         RC = GetComponent<RandomCuisine>();
-        RC.RandomCuisineStart(CC, t);//今回殴り作る料理の決定
+        RC.RandomCuisineStart(CC, t);//今回殴り作る料理の決定と画面の料理を更新
     }
 
+    private void CreateImageBox()//作る料理の決定
+    {
+        //料理を入れておくimageの作成
+        IIB = GetComponent<InstantiateImageBox>();
+        IIB.CreateImageBox();
+        ImageBox = IIB.ImageBox;//同時にボックスの生成から初期位置への配置までを行う
+        /*//debug
+        ImageBox[0, 0].SetActive(false);
+        */
+
     }
+
+
+}

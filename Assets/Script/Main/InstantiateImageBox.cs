@@ -9,23 +9,21 @@ public class InstantiateImageBox : MonoBehaviour
     public GameObject[,] ImageBox { get; private set; }
     GameObject Canvas;
 
-    public GameObject[,] GetImageBox()
-    {
-        InstantiatePlefab();
-        TransformStartPosition();
+    public int x = 3;
+    public int y = 7;
 
-        return ImageBox;
-    }
 
     public void CreateImageBox()
     {
+        InstantiatePlefab();//
+        TransformStartPosition();
 
     }
 
     void InstantiatePlefab()//imageboxのprefabを生成する
     {
         ImageBoxPrefab = Resources.Load("Prefab/P") as GameObject; // Resouces下のCSV読み込み
-        ImageBox = new GameObject[3, 8];
+        ImageBox = new GameObject[x, y];
         Canvas = GameObject.Find("Canvas");
         for (int i = 0; i < ImageBox.GetLength(0); i++)//3
         {
@@ -37,16 +35,16 @@ public class InstantiateImageBox : MonoBehaviour
         }
     }
 
+    RectTransform recttransform;
     void TransformStartPosition()//imageboxを初期位置に配置する
     {
         int num = Screen.width / 6;
         int x = 0;
         int y = 0;
-        RectTransform recttransform;
         for (int i = 0; i < ImageBox.GetLength(0); i++)//3
         {
-            for (int l = 0; l < ImageBox.GetLength(1); l++)
-            {//8
+            for (int l = 0; l < ImageBox.GetLength(1); l++)//8
+            {
                 recttransform = ImageBox[i, l].GetComponent<RectTransform>();//これ重い　無駄な処理になっているのでメインで統合したほうが良い
 
                 switch (i)
@@ -56,7 +54,7 @@ public class InstantiateImageBox : MonoBehaviour
                     case 2: x =  1 * num * 2;  break;
                     default: Debug.LogError("ImageBox配置で想定外のエラー発生"); break;
                 }
-                y = -540 + 130 * l;
+                y = -605 + 130 * l;
 
                 recttransform.localPosition = new Vector2(x, y);
             }
