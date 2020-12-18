@@ -17,6 +17,7 @@ public class MainManeger : MonoBehaviour
     RandomCuisine RC;
     InstantiateImageBox IIB;
     TransformImageBox TIB;
+    GetFood GF;
 
 
     // Start is called before the first frame update
@@ -31,15 +32,34 @@ public class MainManeger : MonoBehaviour
 
 
 
+        GF = GetComponent<GetFood>();
+        GF.SetUP(ImageBox,FS);//初期設定および変数の参照渡し
 
         TIB = GetComponent<TransformImageBox>();
+        TIB.SetUp(ImageBox, FS);
     }
     
     void Update()
     {
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            //Debug.Log(ImageBox[0, 0].GetComponent<Foodstuff>().Name);
+            GF.Get(0);
 
-        TIB.RollmageBox(ImageBox);//ImageBoxを移動させる
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GF.Get(1);
+
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            GF.Get(2);
+
+        }
+
+        TIB.RollmageBox();//ImageBoxを移動させる
 
 
     }

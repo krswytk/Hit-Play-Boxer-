@@ -14,16 +14,15 @@ public class CreateClass : MonoBehaviour
     public Foodstuff[] FS { get; private set; }//全部の画像の名前とspritを格納する
     public CuisineClass[] C { get; private set; }//料理の構成を格納する
 
-    private int a = 0;
-    private int b = 0;
+    
 
     public void CreateClassStater()
     {
         ImageReading();//素材をImageDatasに格納
         TextReading();//TextDatasにtextを読み込んだデータを格納
         SpriteReading();////SpriteDatasにSpriteを読み込んだデータを格納
-        CreateFSClass();//FSClassの生成
         CreateCClass();//CClassの生成
+        CreateFSClass();//FSClassの生成
     }
 
     private void ImageReading()//ImageDatasに画像を格納
@@ -49,10 +48,8 @@ public class CreateClass : MonoBehaviour
         string D = "";
         for (int i = 0; i < TextDatas.Count(); i++)
         {
-            a++;
             for (int l = 0; l < TextDatas[i].Count(); l++)
             {
-                b++;
                 D += TextDatas[i][l] + ",";
             }
             D += "\n\r";
@@ -60,7 +57,7 @@ public class CreateClass : MonoBehaviour
         Debug.Log(D);
     }
 
-    private void SpriteReading()//ImageDatasに画像を格納
+    private void SpriteReading()//SpriteDatasにImageDateの画像を格納
     {
         SpriteDatas = new Sprite[TextDatas.Count()][];
         for (int i = 0; i < TextDatas.Count(); i++)
@@ -68,9 +65,9 @@ public class CreateClass : MonoBehaviour
             SpriteDatas[i] = new Sprite[TextDatas[i].Count()];
             for (int l = 0; l < TextDatas[i].Count(); l++)
             {
-                for(int lp = 0; lp < ImageDatas.Length; lp++)
+                for (int lp = 0; lp < ImageDatas.Length; lp++)
                 {
-                    if(ImageDatas[lp].name == TextDatas[i][l])
+                    if (ImageDatas[lp].name == TextDatas[i][l])
                     {
                         SpriteDatas[i][l] = ImageDatas[lp];
                     }
@@ -80,15 +77,29 @@ public class CreateClass : MonoBehaviour
         }
     }
 
-    private void CreateFSClass()
+    private void CreateFSClass()//CClaseを参照し、料理以外の素材を格納
     {
-        FS = new Foodstuff[ImageDatas.GetLength(0)];//FCの初期化
-
-        List<string> FSDatas = new List<string>();//素材の名前検索からクラスを生成
+        FS = new Foodstuff[ImageDatas.GetLength(0) - C.GetLength(0)];//ImageDatas - CClase = 食材の数
         
-        for (int i = 0; i < FS.GetLength(0); i++)//料理回数繰り返し
+        bool a;//料理の除外に使用
+        int lp = 0;
+
+        for (int i = 0; i < ImageDatas.GetLength(0); i++)//料理、食材を含めた全画像枚数分繰り返す
         {
-            FS[i] = new Foodstuff(ImageDatas[i].name, ImageDatas[i]);//各クラスを初期化、同時に素材名とSpritを格納
+            a = true;
+            for (int l = 0; l < C.GetLength(0); l++)//料理クラスの数繰り返す
+            {
+                if(C[l].CuisineName == ImageDatas[i].name)//料理名とImageDatasの名前が一致する場合
+                {
+                    a = false;
+                }
+                    
+            }
+            if (a)//上記ループで画像名と料理名が一致しなければ食材クラスを生成する
+            {
+                FS[lp] = new Foodstuff(ImageDatas[i].name, ImageDatas[i]);//各クラスを初期化、同時に素材名とSpritを格納
+                lp++;//配列を次に動かす
+            }
         }
     }
 
@@ -100,13 +111,8 @@ public class CreateClass : MonoBehaviour
             C[i] = new CuisineClass(TextDatas[i], SpriteDatas[i]);
         }
     }
-
-
-
-    
-
-
-    
-    
-
 }
+
+
+
+
