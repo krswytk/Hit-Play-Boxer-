@@ -20,6 +20,8 @@ public class MainManeger : MonoBehaviour
     GetFood GF;
 
 
+    public int Money;//残金　購入できる上限
+
     // Start is called before the first frame update
     void Start()
     {

@@ -12,13 +12,13 @@ public class Foodstuff : MonoBehaviour//各素材格納クラス
 
 
 
-    public Foodstuff(string Name, Sprite Material,int min ,int max)//コンストラクタ
+    public Foodstuff(string Name, Sprite Material,int MinM, int MaxM)//コンストラクタ
     {
         this.Name = Name;
         this.Material = Material;
         Getnum = 0;
-        this.MinM = min;
-        this.MaxM = max;
+        this.MinM = MinM;
+        this.MaxM = MaxM;
     }
 
     public void GetFood()

@@ -97,7 +97,7 @@ public class CreateClass : MonoBehaviour
             }
             if (a)//上記ループで画像名と料理名が一致しなければ食材クラスを生成する
             {
-                FS[lp] = new Foodstuff(ImageDatas[i].name, ImageDatas[i]);//各クラスを初期化、同時に素材名とSpritを格納
+                FS[lp] = new Foodstuff(ImageDatas[i].name, ImageDatas[i],50,100);//各クラスを初期化、同時に素材名とSpritを格納
                 lp++;//配列を次に動かす
             }
         }
