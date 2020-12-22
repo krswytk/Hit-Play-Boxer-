@@ -16,9 +16,15 @@ public class GetFood : MonoBehaviour
     RectTransform[,] _RectTransform;
     private Foodstuff[] FS;
     GameObject[,] ImageBox;
+    int Money;
+    int[,] Money_int;
 
-    public void SetUP(GameObject[,] ImageBox , Foodstuff[] FS)
+    Text Money_Text;
+
+    public void SetUP(GameObject[,] ImageBox , Foodstuff[] FS,int Money, int[,] Money_int)
     {
+        this.Money = Money;
+        this.Money_int = Money_int;
         if (GFsw)
         {
             this.ImageBox = ImageBox;
@@ -35,6 +41,10 @@ public class GetFood : MonoBehaviour
                 }
             }
         }
+
+        Money_Text = GameObject.Find("Money_Text").GetComponent<Text>();
+        //Debug.Log(Money_int);
+        Money_Text.text = (Money.ToString("N0"));
     }
     
 
@@ -43,7 +53,7 @@ public class GetFood : MonoBehaviour
     private readonly int c = -410;
     private readonly int BoxSize = 130;
 
-    public void Get(int x)
+    public int Get(int x)
     {
         Debug.Log(x + "レーンの野菜を取得");
         for(int y = 0; y < ImageBox.GetLength(1); y++)
@@ -53,6 +63,7 @@ public class GetFood : MonoBehaviour
                 if (ImageBox[x, y].activeSelf)//オブジェクトの表示がtrueである
                 {
                     FS[int.Parse(ImageBox[x, y].name)].GetFood();//食材を取得したことにして数を増やす
+                    Money -= Money_int[x, y];//所持金から値段をマイナスする
                     ImageBox[x, y].SetActive(false);//取得したオブジェクトを非表示に
                 }
             }
@@ -61,6 +72,7 @@ public class GetFood : MonoBehaviour
                 if (ImageBox[x, y].activeSelf)//オブジェクトの表示がtrueである
                 {
                     FS[int.Parse(ImageBox[x, y].name)].GetFood();//食材を取得したことにして数を増やす
+                    Money -= Money_int[x, y];//所持金から値段をマイナスする
                     ImageBox[x, y].SetActive(false);//取得したオブジェクトを非表示に
                 }
             }
@@ -69,10 +81,13 @@ public class GetFood : MonoBehaviour
                 if (ImageBox[x, y].activeSelf)//オブジェクトの表示がtrueである
                 {
                     FS[int.Parse(ImageBox[x, y].name)].GetFood();//食材を取得したことにして数を増やす
+                    Money -= Money_int[x, y];//所持金から値段をマイナスする
                     ImageBox[x, y].SetActive(false);//取得したオブジェクトを非表示に
                 }
             }
         }
-
+        Money_Text.text = (Money.ToString("N0"));
+        return Money;
     }
+    
 }

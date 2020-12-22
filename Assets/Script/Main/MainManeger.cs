@@ -11,6 +11,7 @@ public class MainManeger : MonoBehaviour
     Foodstuff[] FS;//食材格納クラス　取得数などを格納
     public int[] t;//ランダムに選ばれた３つの数字を格納しておく
     GameObject[,] ImageBox;//素材表示用のimagegameobject
+    int[,] Money_int;
 
 
     CreateClass CrC;
@@ -25,6 +26,8 @@ public class MainManeger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Money = 1000;
+
         CreateClassStart();//食材クラスと料理クラスの生成
 
         DecisionCooking();//作る料理の決定
@@ -33,12 +36,13 @@ public class MainManeger : MonoBehaviour
 
 
 
-
-        GF = GetComponent<GetFood>();
-        GF.SetUP(ImageBox,FS);//初期設定および変数の参照渡し
-
         TIB = GetComponent<TransformImageBox>();
         TIB.SetUp(ImageBox, FS);
+        Money_int = TIB.Money_int;
+
+        GF = GetComponent<GetFood>();
+        GF.SetUP(ImageBox,FS,Money, Money_int);//初期設定および変数の参照渡し
+
     }
     
     void Update()
