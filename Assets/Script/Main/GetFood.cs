@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 殴って取得するのを実装するscript　
@@ -21,7 +22,7 @@ public class GetFood : MonoBehaviour
 
     Text Money_Text;
 
-    public void SetUP(GameObject[,] ImageBox , Foodstuff[] FS,int Money, int[,] Money_int)
+    public void SetUP(GameObject[,] ImageBox , Foodstuff[] FS,ref int Money, int[,] Money_int)
     {
         this.Money = Money;
         this.Money_int = Money_int;
@@ -53,7 +54,7 @@ public class GetFood : MonoBehaviour
     private readonly int c = -410;
     private readonly int BoxSize = 130;
 
-    public int Get(int x)
+    public void Get(int x)
     {
         Debug.Log(x + "レーンの野菜を取得");
         for(int y = 0; y < ImageBox.GetLength(1); y++)
@@ -86,8 +87,20 @@ public class GetFood : MonoBehaviour
                 }
             }
         }
+
+        if (Money <= 0)
+        {
+            SceneManager.LoadScene("Risult");
+        }
+
+
         Money_Text.text = (Money.ToString("N0"));
-        return Money;
+
+    }
+
+    private void Scene()
+    {
+
     }
     
 }

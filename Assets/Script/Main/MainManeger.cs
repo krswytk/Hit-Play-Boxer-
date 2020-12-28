@@ -11,7 +11,7 @@ public class MainManeger : MonoBehaviour
     Foodstuff[] FS;//食材格納クラス　取得数などを格納
     public int[] t;//ランダムに選ばれた３つの数字を格納しておく
     GameObject[,] ImageBox;//素材表示用のimagegameobject
-    int[,] Money_int;
+    int[,] Money_int;//各ボックスに格納されている金額
 
 
     CreateClass CrC;
@@ -41,7 +41,7 @@ public class MainManeger : MonoBehaviour
         Money_int = TIB.Money_int;
 
         GF = GetComponent<GetFood>();
-        GF.SetUP(ImageBox,FS,Money, Money_int);//初期設定および変数の参照渡し
+        GF.SetUP(ImageBox,FS,ref Money, Money_int);//初期設定および変数の参照渡し
 
     }
     
@@ -67,6 +67,12 @@ public class MainManeger : MonoBehaviour
 
         TIB.RollmageBox();//ImageBoxを移動させる
 
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Money = 1;
+        }
+#endif
 
     }
 
