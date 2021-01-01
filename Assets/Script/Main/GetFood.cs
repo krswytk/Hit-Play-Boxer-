@@ -28,7 +28,7 @@ public class GetFood : MonoBehaviour
         this.Money = Money;
         this.Money_int = Money_int;
 
-        Debug.Log(Money.Length);
+        //Debug.Log(Money.Length);
 
         if (GFsw)
         {

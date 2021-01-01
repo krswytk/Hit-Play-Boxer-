@@ -8,9 +8,14 @@ public class RisultManeger : MonoBehaviour
     private Foodstuff[] FS;//食材格納クラス　取得数などを格納
     private int[] t;//ランダムに選ばれた３つの数字を格納しておく
 
+    private CookingDisplay CD;//料理の表示を行う関数群を格納した関数
+
     // Start is called before the first frame update
     void Start()
     {
+
+        DecisionCooking();//制作する料理の表示を行う
+
     }
 
     // Update is called once per frame
@@ -19,7 +24,12 @@ public class RisultManeger : MonoBehaviour
         
     }
 
-
+    /// <summary>
+    /// メインからリザルトに必要なクラス、値を持ってくる
+    /// </summary>
+    /// <param name="CC"></param>
+    /// <param name="FS"></param>
+    /// <param name="t"></param>
     public void StertSetUP(CuisineClass[] CC,Foodstuff[] FS,int[] t)
     {
         this.CC = CC;
@@ -45,5 +55,12 @@ public class RisultManeger : MonoBehaviour
         Debug.Log(StringCC);
         Debug.Log(StringFS);
         Debug.Log(Stringt);
+    }
+
+
+    private void DecisionCooking()//作る料理の決定
+    {
+        CD = GetComponent<CookingDisplay>();
+        CD.CDStert(CC,t);
     }
 }

@@ -51,6 +51,7 @@ public class MainManeger : MonoBehaviour
         GF.SetUP(ImageBox, CC, FS, Money, Money_int);//初期設定および変数の参照渡し
 
         SSW = false;
+        //Debug.Log(t[1]);
 
     }
     
@@ -118,6 +119,9 @@ public class MainManeger : MonoBehaviour
     {
         RC = GetComponent<RandomCuisine>();
         RC.RandomCuisineStart(CC, t);//今回殴り作る料理の決定と画面の料理を更新
+        //Debug.Log(t[0] + "" + t[1] + "" + t[2]);
+        t = RC.ReturnT();
+        //Debug.Log(t[0] + "" + t[1] + "" + t[2]);
     }
 
     private void CreateImageBox()//作る料理の決定
