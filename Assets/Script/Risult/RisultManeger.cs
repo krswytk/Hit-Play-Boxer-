@@ -9,12 +9,14 @@ public class RisultManeger : MonoBehaviour
     private int[] t;//ランダムに選ばれた３つの数字を格納しておく
 
     private CookingDisplay CD;//料理の表示を行う関数群を格納した関数
+    private FoodNum FN;//料理の表示を行う関数群を格納した関数
 
     // Start is called before the first frame update
     void Start()
     {
 
         DecisionCooking();//制作する料理の表示を行う
+        GetFoodNum();//入手した食材の量を表示する
 
     }
 
@@ -62,5 +64,11 @@ public class RisultManeger : MonoBehaviour
     {
         CD = GetComponent<CookingDisplay>();
         CD.CDStert(CC,t);
+    }
+
+    private void GetFoodNum()//入手した食材の量を表示
+    {
+        FN = GetComponent<FoodNum>();
+        FN.CNStart(CC, FS, t);
     }
 }
