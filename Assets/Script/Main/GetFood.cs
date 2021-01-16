@@ -22,12 +22,16 @@ public class GetFood : MonoBehaviour
     int[,] Money_int;
 
     Text Money_Text;
-    
+    AudioSource audioSource;
+    public AudioClip n;
+
+
     public void SetUP(GameObject[,] ImageBox , CuisineClass[] CC, Foodstuff[] FS,int[] Money, int[,] Money_int)
     {
         this.Money = Money;
         this.Money_int = Money_int;
 
+        audioSource = GetComponent<AudioSource>();
         //Debug.Log(Money.Length);
 
         if (GFsw)
@@ -94,7 +98,7 @@ public class GetFood : MonoBehaviour
             }
         }
 
-
+        audioSource.PlayOneShot(n);
         Money_Text.text = (Money[0].ToString("N0"));
 
     }

@@ -26,12 +26,18 @@ public class MainManeger : MonoBehaviour
 
     private bool SSW;//シーン遷移の管理スイッチ　trueで移動する
 
-    private const int StartMoney = 1000;
+    private const int StartMoney = 5000;
 
-   // Start is called before the first frame update
-   void Start()
+
+    AudioSource audioSource;
+    public AudioClip l;
+    private bool sw;
+
+    // Start is called before the first frame update
+    void Start()
     {
 
+        audioSource = GetComponent<AudioSource>();
         Money = new int[1];
         Money[0] = StartMoney;
 
@@ -52,12 +58,12 @@ public class MainManeger : MonoBehaviour
 
         SSW = false;
         //Debug.Log(t[1]);
-
+        sw = true;
     }
     
     void Update()
     {
-        Debug.Log(Money[0]);
+        //Debug.Log(Money[0]);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -80,8 +86,13 @@ public class MainManeger : MonoBehaviour
 
         if (Money[0] <= 0)
         {            //シーン移動の処理はここでのみ行う
-            SceneManager.sceneLoaded += GameSceneLoaded;
-            SceneManager.LoadScene("Risult");
+            if (sw)
+            {
+                audioSource.PlayOneShot(l);
+                SceneManager.sceneLoaded += GameSceneLoadedMain;
+                feadSC.fade("Risult");
+                sw = false;
+            }
         }
 
 
@@ -137,7 +148,7 @@ public class MainManeger : MonoBehaviour
     }
 
 
-    private void GameSceneLoaded(Scene next, LoadSceneMode mode)
+    private void GameSceneLoadedMain(Scene next, LoadSceneMode mode)
     {
         //遷移後のリザルトのマネージャーscriptを取得
         RisultManeger RM = GameObject.Find("Main Camera").GetComponent<RisultManeger>();
@@ -147,6 +158,6 @@ public class MainManeger : MonoBehaviour
 
         Debug.Log("シーン遷移完了");
         // イベントから削除
-        SceneManager.sceneLoaded -= GameSceneLoaded;
+        SceneManager.sceneLoaded -= GameSceneLoadedMain;
     }
 }
