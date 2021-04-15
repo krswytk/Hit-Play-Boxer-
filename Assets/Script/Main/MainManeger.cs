@@ -26,7 +26,7 @@ public class MainManeger : MonoBehaviour
 
     private bool SSW;//シーン遷移の管理スイッチ　trueで移動する
 
-    private const int StartMoney = 5000;
+    private const int StartMoney = 3000;
 
 
     AudioSource audioSource;
