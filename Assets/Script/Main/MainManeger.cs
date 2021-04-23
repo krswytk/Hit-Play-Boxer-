@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+/// <summary>
+/// 基幹部分のソース
+/// </summary>
 
 public class MainManeger : MonoBehaviour
 {
@@ -26,35 +29,41 @@ public class MainManeger : MonoBehaviour
 
     private bool SSW;//シーン遷移の管理スイッチ　trueで移動する
 
-    private const int StartMoney = 3000;
+    private const int StartMoney = 3000;//最初の所持金
 
 
-    AudioSource audioSource;
-    public AudioClip l;
+    AudioSource _AudioSource;
+    public AudioClip _AudioClip;
     private bool sw;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        audioSource = GetComponent<AudioSource>();
+        _AudioSource = GetComponent<AudioSource>();
         Money = new int[1];
         Money[0] = StartMoney;
 
         CreateClassStart();//食材クラスと料理クラスの生成
+        Debug.Log("クラスの生成完了");
 
         DecisionCooking();//作る料理の決定
+        Debug.Log("作る料理の決定完了");
 
         CreateImageBox();//動かすImageBoxの生成
+        Debug.Log("ImageBoxの生成完了");
 
 
 
-        TIB = GetComponent<TransformImageBox>();
+        TIB = GetComponent<TransformImageBox>();//食材移動ｓｃｒｉｐｔを取得
         TIB.SetUp(ImageBox, FS);
+        Debug.Log("食材移動の準備完了");
+
         Money_int = TIB.Money_int;
 
         GF = GetComponent<GetFood>();
         GF.SetUP(ImageBox, CC, FS, Money, Money_int);//初期設定および変数の参照渡し
+        Debug.Log("食材取得の準備完了");
 
         SSW = false;
         //Debug.Log(t[1]);
@@ -88,7 +97,7 @@ public class MainManeger : MonoBehaviour
         {            //シーン移動の処理はここでのみ行う
             if (sw)
             {
-                audioSource.PlayOneShot(l);
+                _AudioSource.PlayOneShot(_AudioClip);
                 SceneManager.sceneLoaded += GameSceneLoadedMain;
                 feadSC.fade("Risult");
                 sw = false;
@@ -114,8 +123,9 @@ public class MainManeger : MonoBehaviour
 
         CrC.CreateClassStater();
 
-        CC = CrC.C;
+        CC = CrC.CC;
         FS = CrC.FS;
+        //Debug.Log(FS[0].Name);
 
         /*
         Debug.Log(this.CC[0].CuisineName);
@@ -135,7 +145,7 @@ public class MainManeger : MonoBehaviour
         //Debug.Log(t[0] + "" + t[1] + "" + t[2]);
     }
 
-    private void CreateImageBox()//作る料理の決定
+    private void CreateImageBox()//食材を入れておく箱の生成及び反映
     {
         //料理を入れておくimageの作成
         IIB = GetComponent<InstantiateImageBox>();

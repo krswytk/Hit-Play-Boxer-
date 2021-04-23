@@ -13,10 +13,10 @@ public class InstantiateImageBox : MonoBehaviour
     public int y = 7;
 
 
-    public void CreateImageBox()
+    public void CreateImageBox()//メインマネージャーから呼び出す関数
     {
-        InstantiatePlefab();//
-        TransformStartPosition();
+        InstantiatePlefab();//画像ボックスの生成
+        TransformStartPosition();//適切な位置への移動
 
     }
 

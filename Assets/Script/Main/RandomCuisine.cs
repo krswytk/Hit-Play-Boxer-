@@ -22,7 +22,7 @@ public class RandomCuisine : MonoBehaviour//制作する料理をランダムで
     {
         int num = CC.GetLength(0);//料理の個数を取得
         t = new int[3];//ランダムに3つの数字を選択
-        Debug.Log("内臓している料理の個数は : " + num);
+        Debug.Log("保持している料理の個数は : " + num);
         do
         {
             t[0] = Random.Range(0, num);

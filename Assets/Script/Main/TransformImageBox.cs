@@ -29,6 +29,7 @@ public class TransformImageBox : MonoBehaviour
         if (sw)
         {
             this.FS = FS;
+            //Debug.Log(FS[0].Name);
             this.ImageBox = ImageBox;
 
             _RectTransform = new RectTransform[ImageBox.GetLength(0), ImageBox.GetLength(1)];//配列の初期化
@@ -94,16 +95,20 @@ public class TransformImageBox : MonoBehaviour
     /// <param name="y"></param>
     Foodstuff f;
     void InputBox(int x,int y)//上に移動したBoxにアイテムを入れ込む//recttransform[x, y]にランダムに素材画像を入れる//食材クラスから金額を取得　ランダムに入れ込む
+        //すべての食材から表示する食材をランダムで決定する。
     {
-        int num = Random.Range(0, Foodnum);//Random.Rangeはintの場合（以上　以下）で値が返る
-        Money_int[x,y] = Random.Range(FS[num].MinM, FS[num].MaxM);
+        int num = Random.Range(0, FS.Length - 1);//Random.Rangeはintの場合（以上　以下）で値が返る//表示する食材の決定
 
-        //        Debug.Log(num);
-        ImageBox[x, y].name = num.ToString();//ゲームオブジェクトの名前をFSの格納番号に変更
-        //Debug.Log(f.Name);
-        _Image[x, y].sprite = FS[num].Material;//FSの該当番号の画像を入れる
-
-        _Text[x, y].text = Money_int[x, y].ToString("N0");
+        //Boxの中身の入れ替え処理
+        try{
+            ImageBox[x, y].name = FS[num].Name.ToString();//ゲームオブジェクトの名前を食材名に変更
+            _Image[x, y].sprite = FS[num].Material;//FSの該当番号の画像を入れる
+            _Text[x, y].text = FS[num].NowMoney.ToString("N0");//金額を金額テキストに入れる
+        }
+        catch
+        {
+            Debug.Log("食材:" + FS[num-1].Name + "と" + FS[num + 1].Name + " のあいだがエラーです。");
+        }
     }
 
 }
