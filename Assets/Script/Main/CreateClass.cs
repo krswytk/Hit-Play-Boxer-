@@ -169,7 +169,7 @@ public class CreateClass : MonoBehaviour
             {
                 for (int lp = 0; lp < ImageDatas.Length; lp++)//全食材回数分ループ
                 {
-                    Debug.Log(lp);
+                    //Debug.Log(lp);
                     if (TextDatas[i][l] == ImageDatas[lp].name)//料理、食材名と対応する画像が見つかったら
                     {
                         SpriteDatas[l] = ImageDatas[lp];//SpriteDatas(クラス生成用に画像を保持)に対応画像を代入する。

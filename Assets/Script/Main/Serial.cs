@@ -25,6 +25,7 @@ public class Serial : MonoBehaviour
     float accY3 = 0.0f;
     float OldaccY3 = 0.0f;
 
+    GetFood GetFood;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,7 @@ public class Serial : MonoBehaviour
         {
             Debug.Log("can not open serial port");
         }
+        GetFood = GameObject.Find("Main Camera").GetComponent<GetFood>();
     }
     public void ReadDataA()
     {//データ受信時
@@ -107,15 +109,15 @@ public class Serial : MonoBehaviour
     {
         if (accY == 1 && OldaccY == 0)
         {
-            GameObject.Find("Main Camera").GetComponent<GetFood>().Get(2);
+            GetFood.Get(2,0);
         }
         if (accY2 == 1 && OldaccY2 == 0)
         {
-            GameObject.Find("Main Camera").GetComponent<GetFood>().Get(1);
+            GetFood.Get(1,0);
         }
         if (accY3 == 1 && OldaccY3 == 0)
         {
-            GameObject.Find("Main Camera").GetComponent<GetFood>().Get(0);
+            GetFood.Get(0,0);
         }
         OldaccY = accY;
         OldaccY2 = accY2;
