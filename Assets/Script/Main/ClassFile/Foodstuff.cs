@@ -19,7 +19,7 @@ public class Foodstuff : MonoBehaviour//各素材格納クラス
         Getnum = 0;
         this.Money = Money;
 
-        int MoneyNum = Random.Range(0, Money.Length);//該当食材に登録されている金額数を上限にランダムで何番の金額を使用するか決定。
+        int MoneyNum = Random.Range(0, Money.Length-1);//該当食材に登録されている金額数を上限にランダムで何番の金額を使用するか決定。
         NowMoney = Money[MoneyNum];//今回のゲームで使用する値段を入れておく
     }
 

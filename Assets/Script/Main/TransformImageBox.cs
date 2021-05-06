@@ -11,7 +11,7 @@ public class TransformImageBox : MonoBehaviour
     Image[,] _Image;
     GameObject[,] ImageBox;
     Text[,] _Text;
-    public int[,] Money_int;
+    //public int[,] Money_int;
 
 
 
@@ -35,7 +35,7 @@ public class TransformImageBox : MonoBehaviour
             _RectTransform = new RectTransform[ImageBox.GetLength(0), ImageBox.GetLength(1)];//配列の初期化
             _Image = new Image[ImageBox.GetLength(0), ImageBox.GetLength(1)];
             _Text = new Text[ImageBox.GetLength(0), ImageBox.GetLength(1)];
-            Money_int = new int[ImageBox.GetLength(0), ImageBox.GetLength(1)];
+            //Money_int = new int[ImageBox.GetLength(0), ImageBox.GetLength(1)];
 
             Foodnum = FS.GetLength(0);//FSの要素数（食材の数）を格納
 
@@ -46,7 +46,7 @@ public class TransformImageBox : MonoBehaviour
                     _RectTransform[i, l] = ImageBox[i, l].GetComponent<RectTransform>();//BOXの位置変更用の取得
                     _Image[i, l] = ImageBox[i, l].GetComponent<Image>();//BOXの画像変更用の変更
                     _Text[i, l] = ImageBox[i, l].transform.GetChild(1).gameObject.GetComponent<Text>();//値段設定用のTextを取得
-                    Money_int[i, l] = 0;//ImageBoxと連動して金額を格納しておく　初期値０
+                    //Money_int[i, l] = 0;//ImageBoxと連動して金額を格納しておく　初期値０
                     ImageBox[i, l].SetActive(false);//透明にしておく
                 }
             }
@@ -65,11 +65,11 @@ public class TransformImageBox : MonoBehaviour
         {
             for (int l = 0; l < ImageBox.GetLength(1); l++)//8
             {
-                V2 = _RectTransform[i, l].localPosition * 1.0f;
+                V2 = _RectTransform[i, l].localPosition * 1.0f;//vecter2型Ｖ２に現在の座標を記録しておく
                 //if (i == 0 && l == 0) Debug.Log(V2);
                 if (V2.y <= -605)//下まで行った場合の処理
                 {
-                    _RectTransform[i, l].localPosition = new Vector2(V2.x, 305);
+                    _RectTransform[i, l].localPosition = new Vector2(V2.x, 305);//x座標をそのままＹ座標を上に戻す
                     InputBox(i, l);//画像を入れ込む
                     ImageBox[i, l].SetActive(true);//setup、取得で透明にしたものを可視化できるようにする
                 }
@@ -101,9 +101,15 @@ public class TransformImageBox : MonoBehaviour
 
         //Boxの中身の入れ替え処理
         try{
+            /*
             ImageBox[x, y].name = FS[num].Name.ToString();//ゲームオブジェクトの名前を食材名に変更
             _Image[x, y].sprite = FS[num].Material;//FSの該当番号の画像を入れる
             _Text[x, y].text = FS[num].NowMoney.ToString("N0");//金額を金額テキストに入れる
+            */
+            ImageBox[x, y].name = num.ToString();//食材の配列番号を名前にする
+            _Image[x, y].sprite = FS[num].Material;//FSの該当番号の画像を入れる
+            _Text[x, y].text = FS[num].NowMoney.ToString("N0");//金額を金額テキストに入れる
+
         }
         catch
         {
