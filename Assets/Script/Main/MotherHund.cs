@@ -19,9 +19,10 @@ public class MotherHund : MonoBehaviour
     private readonly int a = -20;
     private readonly int b = -280;
     // Update is called once per frame
-    /*
-    public void MagicHund(int x,int y)//3,2
+
+    public void MagicHund(int x, int y)//3,2
     {
+        /*
         ImageBox[x, y].SetActive(false);
         Debug.Log(x + "レーンの野菜を取得");
         for (int i = 0; i < ImageBox.GetLength(1); i++)//8
@@ -40,4 +41,6 @@ public class MotherHund : MonoBehaviour
             }
         }
         */
+    }
+        
 }
