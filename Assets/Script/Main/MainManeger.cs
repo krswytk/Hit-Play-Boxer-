@@ -73,6 +73,7 @@ public class MainManeger : MonoBehaviour
         PD = GetComponent<PunchDetection>();//パンチを取得
 
         MH = GetComponent<MotherHund>();//パンチを取得
+        MH.SetUp(ImageBox);
 
         SSW = false;
         //Debug.Log(t[1]);
