@@ -12,6 +12,8 @@ public class MotherHund : MonoBehaviour
 {
     GameObject[,] ImageBox;
     RectTransform[,] _RectTransform;
+
+    private Animator AnimHund;
     public void SetUp(GameObject[,] ImageBox)
     {
         this.ImageBox = ImageBox;
@@ -24,15 +26,23 @@ public class MotherHund : MonoBehaviour
                 _RectTransform[i,l] = ImageBox[i,l].GetComponent<RectTransform>();
             }
         }
+
+        AnimHund = GameObject.Find("Hund").GetComponent<Animator>();
     }
 
+    /*
     private readonly int a = -20;
     private readonly int b = -280;
+    */
+    private readonly int a = 110;
+    private readonly int b = -150;
     private int ynum = 0;//縦のどこを取得するか格納しておく変数
+    private int inum = 0;//iを格納して0.5秒後に食べ物を消せるようにする変数
     private readonly int BoxSize = 130;
 
     public void MagicHund(int x, int y)//3,2  012 01
     {
+
         switch (y)
         {
             case 0: ynum = a; break;
@@ -43,26 +53,85 @@ public class MotherHund : MonoBehaviour
         }
 
         //
-        Debug.Log(x + "レーンの野菜を強奪");
+        Debug.Log(x + "レーン"+ y + "番目の野菜を強奪");
         for (int i = 0; i < ImageBox.GetLength(1); i++)//8
         {
-            Debug.Log(ynum);
-            Debug.Log(BoxSize);
-            Debug.Log(_RectTransform[x, i].localPosition.y);
+            //Debug.Log(ynum);
+            //Debug.Log(BoxSize);
+            //Debug.Log(_RectTransform[x, i].localPosition.y);
             if (ynum - BoxSize / 2 < _RectTransform[x, i].localPosition.y && _RectTransform[x, i].localPosition.y < ynum + BoxSize / 2)//円の上座標<食材の中央座標<円の下座標
             {
                 if (ImageBox[x, i].activeSelf)//オブジェクトの表示がtrueである
                 {
-                    MagicHundDispley();
-                    ImageBox[x, i].SetActive(false);
+                    inum = i;
+                    MagicHundDispley(x, y);//ママの手を表示
+                                           //ImageBox[x, i].SetActive(false);
+                    StartCoroutine(GetMagicHund(x, y));//0.5秒後に食材を削除
                 }
             }
         }
     }
 
-    private void MagicHundDispley()
+    private IEnumerator GetMagicHund(int x, int y)
     {
+        yield return new WaitForSeconds(0.7f);//0.5秒後に                
+        if (ImageBox[x, inum].activeSelf)//オブジェクトの表示がtrueである
+        {
+            ImageBox[x, inum].SetActive(false);
+        }
+    }
 
+
+    private void MagicHundDispley(int x, int y)
+    {
+        switch (x)
+        {
+            case 0:
+                switch (y)
+                {
+                    case 0:
+                        AnimHund.SetBool("OnHundR1", true);
+                        break;
+                    case 1:
+                        AnimHund.SetBool("OnHundR2", true);
+                        break;
+                    default:
+                        Debug.LogError("ママの手で問題発生_21");
+                        break;
+                }
+                break;
+            case 1:
+                switch (y)
+                {
+                    case 0:
+                        AnimHund.SetBool("OnHundS1", true);
+                        break;
+                    case 1:
+                        AnimHund.SetBool("OnHundS2", true);
+                        break;
+                    default:
+                        Debug.LogError("ママの手で問題発生_22");
+                        break;
+                }
+                break;
+            case 2:
+                switch (y)
+                {
+                    case 0:
+                        AnimHund.SetBool("OnHundL1", true);
+                        break;
+                    case 1:
+                        AnimHund.SetBool("OnHundL2", true);
+                        break;
+                    default:
+                        Debug.LogError("ママの手で問題発生_23");
+                        break;
+                }
+                break;
+            default:
+                Debug.LogError("ママの手で問題発生_24");
+                break;
+        }
     }
 
 

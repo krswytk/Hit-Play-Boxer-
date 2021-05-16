@@ -11,10 +11,13 @@ public class InstantiateImageBox : MonoBehaviour
 
     public int x = 3;
     public int y = 7;
+    private GameObject ImageBoxObj;
 
 
     public void CreateImageBox()//メインマネージャーから呼び出す関数
     {
+        ImageBoxObj = GameObject.Find("ImageBox");
+
         InstantiatePlefab();//画像ボックスの生成
         TransformStartPosition();//適切な位置への移動
 
@@ -29,7 +32,7 @@ public class InstantiateImageBox : MonoBehaviour
         {
             for (int l = 0; l < ImageBox.GetLength(1); l++)
             {//8
-                ImageBox[i, l] = Instantiate(ImageBoxPrefab, new Vector2(0, 0), Quaternion.identity, Canvas.transform);//Canvasの子にする
+                ImageBox[i, l] = Instantiate(ImageBoxPrefab, new Vector2(0, 0), Quaternion.identity, ImageBoxObj.transform);//Canvasの子にする
                 ImageBox[i, l].name = i + "" + l;
             }
         }

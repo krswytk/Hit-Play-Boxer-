@@ -18,13 +18,13 @@ public class MainManeger : MonoBehaviour
     int[,] Money_int;//各ボックスに格納されている金額
 
 
-    CreateClass CrC;
-    RandomCuisine RC;
-    InstantiateImageBox IIB;
-    TransformImageBox TIB;
-    GetFood GF;
-    PunchDetection PD;
-    MotherHund MH;
+    CreateClass CrC;//クラスの生成
+    RandomCuisine RC;//料理の決定
+    InstantiateImageBox IIB;//ボックスの生成
+    TransformImageBox TIB;//ボックスの移動
+    GetFood GF;//食材の獲得
+    PunchDetection PD;//パンチの取得
+    MotherHund MH;//妨害の発生
 
 
     public int[] Money;//残金　購入できる上限
@@ -35,6 +35,7 @@ public class MainManeger : MonoBehaviour
 
     private float Timer;
     private float MotherHundCoolTime;
+    public float MotherHundCoolTimeMax = 3;
 
 
     AudioSource _AudioSource;
@@ -80,7 +81,7 @@ public class MainManeger : MonoBehaviour
         sw = true;
 
         Timer = 0;
-        MotherHundCoolTime = 10;
+        MotherHundCoolTime = 5.5f;//ここは絶対に.5であること
     }
     
     void Update()
@@ -104,12 +105,14 @@ public class MainManeger : MonoBehaviour
             PD.Punch(2);
 
         }
+
         Timer += Time.deltaTime;
+        //食材強奪の部分
         MotherHundCoolTime -= Time.deltaTime;
         if(MotherHundCoolTime < 0)
         {
-            MH.MagicHund(Random.Range(0, 2), Random.Range(0, 1));//ｘ０－２ ｙ０－１
-            MotherHundCoolTime = 10;
+            MH.MagicHund(Random.Range(0, 3), Random.Range(0, 2));//ｘ０－２ ｙ０－１
+            MotherHundCoolTime = MotherHundCoolTimeMax;
         }
 
 
