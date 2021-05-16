@@ -135,7 +135,7 @@ public class PunchDetection : MonoBehaviour
                 break;
         }
 
-        Debug.Log("左パンチ");
+        //Debug.Log("左パンチ");
     }
     void PunchS()
     {
@@ -156,7 +156,7 @@ public class PunchDetection : MonoBehaviour
                 Debug.LogError("パンチで問題発生_05");
                 break;
         }
-        Debug.Log("中パンチ");
+        //Debug.Log("中パンチ");
 
     }
     void PunchR()
@@ -178,7 +178,7 @@ public class PunchDetection : MonoBehaviour
                 Debug.LogError("パンチで問題発生_05");
                 break;
         }
-        Debug.Log("右パンチ");
+       // Debug.Log("右パンチ");
 
     }
 }

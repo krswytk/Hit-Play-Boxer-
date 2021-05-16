@@ -26,6 +26,10 @@ public class GetFood : MonoBehaviour
     public AudioClip n;
 
 
+
+    ShadowManeger SM;//食材の影管理
+
+
     public void SetUP(GameObject[,] ImageBox , CuisineClass[] CC, Foodstuff[] FS,int[] Money, int[,] Money_int)
     {
         this.Money = Money;//所持金を取得
@@ -33,6 +37,9 @@ public class GetFood : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         //Debug.Log(Money.Length);
+
+        SM = GetComponent<ShadowManeger>();//影の管理スクリプト
+        SM.SetUP(CC,FS);
 
         if (GFsw)
         {
@@ -82,7 +89,7 @@ public class GetFood : MonoBehaviour
 
         if (Money[0] > 0)
         {
-            Debug.Log(x + "レーンの野菜を取得");
+            //Debug.Log(x + "レーンの野菜を取得");
             for (int i = 0; i < ImageBox.GetLength(1); i++)//8
             {
                 //上の判定
@@ -90,10 +97,11 @@ public class GetFood : MonoBehaviour
                 {
                     if (ImageBox[x, i].activeSelf)//オブジェクトの表示がtrueである
                     {
-                        Debug.Log(int.Parse(ImageBox[x, i].name));
+                        //Debug.Log(int.Parse(ImageBox[x, i].name));
                         num = int.Parse(ImageBox[x, i].name);
                         FS[num].GetFood();//食材を取得したことにして数を増やす
                         Money[0] -= FS[num].NowMoney;//所持金から値段をマイナスする
+                        SM.GetCuisineCheck(num);
                         ImageBox[x, i].SetActive(false);//取得したオブジェクトを非表示に
                     }
                 }
@@ -148,5 +156,8 @@ public class GetFood : MonoBehaviour
 
     }
 
-    
+
+
+
+
 }
