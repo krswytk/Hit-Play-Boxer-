@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class restart : MonoBehaviour
+public class Restart : MonoBehaviour
 {
     AudioSource audioSource;
     // Start is called before the first frame update

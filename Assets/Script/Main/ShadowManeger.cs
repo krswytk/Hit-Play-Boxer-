@@ -27,6 +27,7 @@ public class ShadowManeger : MonoBehaviour
             {
                 //Debug.LogError(i);
                 ShadowImage[i] = GameObject.Find("Shadow" + (i+1)).GetComponent<Image>();
+                ShadowImage[i].fillAmount = 1f;//初期値としてすべて黒にしておく
             }
         }
         catch(NullReferenceException e)

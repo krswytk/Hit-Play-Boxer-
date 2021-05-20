@@ -21,10 +21,17 @@ public class CookingDisplay : MonoBehaviour
     /// </summary>
     private void SetOB(CuisineClass[] CC, int[] t)
     {
-        for(int i = 0;i<3;i++)
+        try
         {
-            Image cuisine = GameObject.Find("cuisine" + (i + 1)).transform.GetChild(0).gameObject.GetComponent<Image>();//料理欄の料理オブジェクトを右から順に取得する
-            cuisine.sprite = CC[t[i]].CuisineMaterial;
+            for (int i = 0; i < 3; i++)
+            {
+                Image cuisine = GameObject.Find("CI" + (i + 1)).gameObject.GetComponent<Image>();//料理欄の料理オブジェクトを右から順に取得する
+                cuisine.sprite = CC[t[i]].CuisineMaterial;
+            }
+        }
+        catch
+        {
+            Debug.LogError("CookingDisplayでエラー");
         }
     }
 }
