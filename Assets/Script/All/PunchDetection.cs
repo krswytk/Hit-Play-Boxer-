@@ -14,6 +14,11 @@ public class PunchDetection : MonoBehaviour
     //main
     GetFood GF;
     //risult
+    RTitleGo RTG;
+    //credit
+    CTitleGo CTG;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +37,13 @@ public class PunchDetection : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Risult")
         {
             Scenenum = 2;
+            RTG = GetComponent<RTitleGo>();
+
+        }
+        if (SceneManager.GetActiveScene().name == "credit")
+        {
+            Scenenum = 3;
+            CTG = GetComponent<CTitleGo>();
 
         }
     }
@@ -39,6 +51,22 @@ public class PunchDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+
+            Punch(0);
+
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Punch(1);
+
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Punch(2);
+
+        }
     }
 
     /// <summary>
@@ -128,6 +156,11 @@ public class PunchDetection : MonoBehaviour
                 break; 
 
             case 2:  //リザルトの場合
+                RTG.downbutton();
+                break;
+
+            case 3:  //クレジットの場合
+                CTG.Down();
                 break;
 
             default:
@@ -150,6 +183,11 @@ public class PunchDetection : MonoBehaviour
                 break;
 
             case 2:  //リザルトの場合
+                RTG.downbutton();
+                break;
+
+            case 3:  //クレジットの場合
+                CTG.Down();
                 break;
 
             default:
@@ -172,6 +210,11 @@ public class PunchDetection : MonoBehaviour
                 break;
 
             case 2:  //リザルトの場合
+                RTG.downbutton();
+                break;
+
+            case 3:  //クレジットの場合
+                CTG.Down();
                 break;
 
             default:

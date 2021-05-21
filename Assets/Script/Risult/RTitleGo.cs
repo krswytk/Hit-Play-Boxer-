@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Restart : MonoBehaviour
+public class RTitleGo : MonoBehaviour
 {
     AudioSource audioSource;
     // Start is called before the first frame update
@@ -21,6 +21,6 @@ public class Restart : MonoBehaviour
     public void downbutton()
     {
         audioSource.Play();
-        feadSC.fade("Main");
+        feadSC.fade("Title");
     }
 }

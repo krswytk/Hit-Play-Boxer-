@@ -15,7 +15,8 @@ public class CTitleGo : MonoBehaviour
     private float t;
     // Update is called once per frame
     void Update()
-    { t += Time.deltaTime;
+    {
+        t += Time.deltaTime;
         if (t > 5)
         {
             if (Input.anyKey && !Input.GetMouseButton(0) && !Input.GetMouseButton(1) && !Input.GetMouseButton(2))

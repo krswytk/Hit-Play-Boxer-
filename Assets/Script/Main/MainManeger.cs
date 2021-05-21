@@ -88,6 +88,7 @@ public class MainManeger : MonoBehaviour
     {
         //Debug.Log(Money[0]);
         //0-2 RSLでも可
+        /*
         if (Input.GetKeyDown(KeyCode.Z))
         {
             //Debug.Log(ImageBox[0, 0].GetComponent<Foodstuff>().Name);
@@ -105,6 +106,7 @@ public class MainManeger : MonoBehaviour
             PD.Punch(2);
 
         }
+        *///PDの方に移植したため削除 場合によってはPDを削除して復活
 
         Timer += Time.deltaTime;
         //食材強奪の部分
