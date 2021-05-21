@@ -37,6 +37,9 @@ public class FoodNum : MonoBehaviour
         ChangeImage(CC,FS,t);//料理に必要な食材画像に入れ替え  同時に入手数から色を変更
         Debug.Log("料理に必要な食材画像に入れ替え  同時に入手数から色を変更");
 
+        //食材数が6未満の場合6個目の画像イメージを非表示にする。
+        CloseImage(CC,t);
+
 
         ChangeIrast();//背景を入手数に応じて変更
         //Back.GetComponent<Image>().sprite = Irast[1];
@@ -145,6 +148,28 @@ public class FoodNum : MonoBehaviour
         Irast[2] = Resources.Load("ex/R2") as Sprite;
         Debug.Log(Irast[0]);
 
+    }
+
+    private void CloseImage(CuisineClass[] CC,int[] t)
+    {
+        for(int i = 0;i < t.Length; i++)//3回繰り返す
+        {
+            if(CC[t[i]].Name.Length == 5)
+            {
+                Food[i,5].SetActive(false);
+            }
+            if (CC[t[i]].Name.Length == 4)
+            {
+                Food[i, 4].SetActive(false);
+                Food[i, 5].SetActive(false);
+            }
+            if (CC[t[i]].Name.Length == 3)
+            {
+                Food[i, 3].SetActive(false);
+                Food[i, 4].SetActive(false);
+                Food[i, 5].SetActive(false);
+            }
+        }
     }
 
     //入手した食材数に応じて数を変更
