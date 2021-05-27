@@ -25,21 +25,26 @@ public class MainManeger : MonoBehaviour
     GetFood GF;//食材の獲得
     PunchDetection PD;//パンチの取得
     MotherHund MH;//妨害の発生
+    Clock C;//時計の表示の発生
 
 
-    public int[] Money;//残金　購入できる上限
+    public int Money;//残金　購入できる上限
 
     private bool SSW;//シーン遷移の管理スイッチ　trueで移動する
 
     private const int StartMoney = 3000;//最初の所持金
 
+
+    private float LimitTime = 60f;
     private float Timer;
+
     private float MotherHundCoolTime;
     public float MotherHundCoolTimeMax = 3;
 
 
     AudioSource _AudioSource;
     public AudioClip _AudioClip;
+
     private bool sw;
 
     // Start is called before the first frame update
@@ -47,8 +52,7 @@ public class MainManeger : MonoBehaviour
     {
 
         _AudioSource = GetComponent<AudioSource>();
-        Money = new int[1];
-        Money[0] = StartMoney;
+        Money = StartMoney;
 
         CreateClassStart();//食材クラスと料理クラスの生成
         Debug.Log("クラスの生成完了");
@@ -68,13 +72,17 @@ public class MainManeger : MonoBehaviour
         //Money_int = TIB.Money_int;
 
         GF = GetComponent<GetFood>();
-        GF.SetUP(ImageBox, CC, FS, Money, Money_int);//初期設定および変数の参照渡し
+        GF.SetUP(ImageBox, CC, FS, Money, Money_int, StartMoney);//初期設定および変数の参照渡し
         Debug.Log("食材取得の準備完了");
 
         PD = GetComponent<PunchDetection>();//パンチを取得
 
-        MH = GetComponent<MotherHund>();//パンチを取得
+        MH = GetComponent<MotherHund>();//主婦の手を取得
         MH.SetUp(ImageBox);
+
+        C = GetComponent<Clock>();//時計の表示スクリプトを取得
+        C.TimerSetUp(LimitTime);
+
 
         SSW = false;
         //Debug.Log(t[1]);
@@ -117,17 +125,18 @@ public class MainManeger : MonoBehaviour
             MotherHundCoolTime = MotherHundCoolTimeMax;
         }
 
+        C.ClockMove(Timer);//時計を動かす
 
+        if(LimitTime <= Timer)//制限時間を超えたら
+        {
+            Risult();
+        }
 
-        if (Money[0] <= 0)
+        Debug.Log("Money = " + Money);
+
+        if (Money <= 0)
         {            //シーン移動の処理はここでのみ行う
-            if (sw)
-            {
-                _AudioSource.PlayOneShot(_AudioClip);
-                SceneManager.sceneLoaded += GameSceneLoadedMain;
-                feadSC.fade("Risult");
-                sw = false;
-            }
+            Risult();
         }
 
 
@@ -137,7 +146,7 @@ public class MainManeger : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.L))//デバッグ用チートコマンド
         {
-            Money[0] = 1;
+            Money = 1;
         }
 #endif
 
@@ -183,6 +192,17 @@ public class MainManeger : MonoBehaviour
 
     }
 
+    public void Risult()//タイプアップの処理
+    {
+        if (sw)
+        {
+            _AudioSource.PlayOneShot(_AudioClip);
+            SceneManager.sceneLoaded += GameSceneLoadedMain;
+            feadSC.fade("Risult");
+            sw = false;
+        }
+    }
+
 
     private void GameSceneLoadedMain(Scene next, LoadSceneMode mode)
     {
@@ -196,4 +216,5 @@ public class MainManeger : MonoBehaviour
         // イベントから削除
         SceneManager.sceneLoaded -= GameSceneLoadedMain;
     }
+
 }

@@ -16,6 +16,7 @@ public class RisultManeger : MonoBehaviour
     {
 
         DecisionCooking();//制作する料理の表示を行う
+        Debug.Log(FS.GetLength(0));
         GetFoodNum();//入手した食材の量を表示する
 
     }

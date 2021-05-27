@@ -18,25 +18,31 @@ public class GetFood : MonoBehaviour
     private CuisineClass[] CC;
     private Foodstuff[] FS;
     GameObject[,] ImageBox;
-    int[] Money;//所持金額
+    int Money;//所持金額
+    int StartMoney;//所持金額
     int[,] Money_int;//食材格納金額
 
-    Text Money_Text;
+    CoinManeger CM;//小銭袋残金の表示管理
+
+    //Text Money_Text;
     AudioSource audioSource;
     public AudioClip n;
 
 
 
     ShadowManeger SM;//食材の影管理
+    MainManeger MM;
 
 
-    public void SetUP(GameObject[,] ImageBox , CuisineClass[] CC, Foodstuff[] FS,int[] Money, int[,] Money_int)
+    public void SetUP(GameObject[,] ImageBox , CuisineClass[] CC, Foodstuff[] FS,int Money, int[,] Money_int,int StartMoney)
     {
         this.Money = Money;//所持金を取得
+        this.StartMoney = StartMoney;//メモリーを取得
         this.Money_int = Money_int;//メモリーを取得
 
         audioSource = GetComponent<AudioSource>();
         //Debug.Log(Money.Length);
+        MM = GetComponent<MainManeger>();//影の管理スクリプト
 
         SM = GetComponent<ShadowManeger>();//影の管理スクリプト
         SM.SetUP(CC,FS);
@@ -59,9 +65,14 @@ public class GetFood : MonoBehaviour
             }
         }
 
+        /*
         Money_Text = GameObject.Find("Money_Text").GetComponent<Text>();
         //Debug.Log(Money_int);
-        Money_Text.text = (Money[0].ToString("N0"));
+        Money_Text.text = (Money.ToString("N0"));
+        */
+
+        CM = GetComponent<CoinManeger>();//小銭袋のスクリプトを取得
+        CM.CoinSetUp(StartMoney);
     }
     
 
@@ -87,7 +98,7 @@ public class GetFood : MonoBehaviour
                 break;
         }
 
-        if (Money[0] > 0)
+        if (Money > 0)
         {
             //Debug.Log(x + "レーンの野菜を取得");
             for (int i = 0; i < ImageBox.GetLength(1); i++)//8
@@ -100,7 +111,7 @@ public class GetFood : MonoBehaviour
                         //Debug.Log(int.Parse(ImageBox[x, i].name));
                         num = int.Parse(ImageBox[x, i].name);
                         FS[num].GetFood();//食材を取得したことにして数を増やす
-                        Money[0] -= FS[num].NowMoney;//所持金から値段をマイナスする
+                        Money -= FS[num].NowMoney;//所持金から値段をマイナスする
                         SM.GetCuisineCheck(num);
                         ImageBox[x, i].SetActive(false);//取得したオブジェクトを非表示に
                     }
@@ -145,15 +156,24 @@ public class GetFood : MonoBehaviour
         }
 
         audioSource.PlayOneShot(n);
-        if (Money[0] > 0)
+
+        /*
+        if (Money > 0)
         {
-            Money_Text.text = (Money[0].ToString("N0"));
+            Money_Text.text = (Money.ToString("N0"));
         }
         else
         {
             Money_Text.text = (0.ToString("N0"));
         }
-
+        */
+        CM.CoinDown(Money);
+        //Debug.Log("Money = " + Money);
+        if (Money <= 0)
+        {
+            Debug.Log("リザルト画面の呼び出し");
+            MM.Risult();
+        }
     }
 
 

@@ -27,7 +27,7 @@ public class FoodNum : MonoBehaviour
         miss = 0;
         Back = GameObject.Find("Background");
 
-        //動かないからとりあえず首
+        //動かないからとりあえず首 publicで直接入力
         //LoadIrast();
         Debug.Log("イラストロード");
 

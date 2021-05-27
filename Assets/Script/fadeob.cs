@@ -47,7 +47,7 @@ public class fadeob : MonoBehaviour
 
         C.color = new Color(0, 0, 0, i / 255.0f);
         action();
-        Debug.Log(i);
+        //Debug.Log(i);
         if (i >= 255)
         {
             SceneManager.LoadScene(name);
