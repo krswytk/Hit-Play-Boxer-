@@ -38,7 +38,7 @@ public class FoodNum : MonoBehaviour
         Debug.Log("料理に必要な食材画像に入れ替え  同時に入手数から色を変更");
 
         //食材数が6未満の場合6個目の画像イメージを非表示にする。
-        CloseImage(CC,t);
+        //CloseImage(CC,t);
 
 
         ChangeIrast();//背景を入手数に応じて変更
@@ -55,7 +55,7 @@ public class FoodNum : MonoBehaviour
         for (int i = 1; i < Food.GetLength(0) + 1; i++)
         {
 
-            for (int l = 1; l < Food.GetLength(1) + 1; l++)
+            for (int l = 1; l < Food.GetLength(1); l++)
             {
                 Food[i - 1, l - 1] = GameObject.Find("F" + i + "" + l);
                 //Debug.Log(Food[i - 1, l - 1]);

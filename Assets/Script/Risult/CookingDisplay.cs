@@ -11,7 +11,7 @@ public class CookingDisplay : MonoBehaviour
     /// </summary>
     public void CDStert(CuisineClass[] CC,int[] t)
     {
-        Debug.Log("デバッグ");
+        //Debug.Log("デバッグ");
         SetOB(CC,t);
     }
 
