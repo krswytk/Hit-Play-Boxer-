@@ -8,19 +8,23 @@ public class SceneSelect : MonoBehaviour
     private Patrn patrm;
     private Color Choice, NoChoice;
     private Image[] PanchImage;
+    private Animator PnchAnimOb;
     // Start is called before the first frame update
     void Start()
     {
+        /*
         patrm = Patrn.Sentr;
 
         Choice = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         NoChoice = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+        */
 
         PanchImage = new Image[3];
         PanchImage[0] = GameObject.Find("Green").GetComponent<Image>();
         PanchImage[1] = GameObject.Find("Red").GetComponent<Image>();
         PanchImage[2] = GameObject.Find("Yellow").GetComponent<Image>();
 
+        PnchAnimOb = GameObject.Find("pnch").GetComponent<Animator>();
         colorChange();
     }
     public enum Patrn
@@ -33,6 +37,14 @@ public class SceneSelect : MonoBehaviour
 
     public void SelectR()
     {
+        Destroy(PnchAnimOb);
+        PanchImage[0].color = new Color(0, 0, 0, 0);
+        PanchImage[1].color = new Color(0, 0, 0, 0);
+        PanchImage[2].color = new Color(1, 1, 1, 1);
+        feadSC.fade("credit");
+
+        /////////////////////////////////////////////////
+        /*
         switch (patrm)
         {
             case Patrn.Leit://左 -> 中
@@ -46,10 +58,17 @@ public class SceneSelect : MonoBehaviour
                 break;
         }
         colorChange();
+        */
     }
     public void SelectL()
     {
 
+        Destroy(PnchAnimOb);
+        PanchImage[0].color = new Color(1, 1, 1, 1);
+        PanchImage[1].color = new Color(0, 0, 0, 0);
+        PanchImage[2].color = new Color(0, 0, 0, 0);
+        ////////////////////////////////////////////
+        /*
         switch (patrm)
         {
             case Patrn.Leit://左 -> 右
@@ -63,10 +82,21 @@ public class SceneSelect : MonoBehaviour
                 break;
         }
         colorChange();
+        */
 
     }
     public void SelectS()
     {
+        Destroy(PnchAnimOb);
+        PanchImage[0].color = new Color(0, 0, 0, 0);
+        PanchImage[1].color = new Color(1, 1, 1, 1);
+        PanchImage[2].color = new Color(0, 0, 0, 0);
+        feadSC.fade("Main");
+
+
+
+        ///////////////////////////////////////
+        /*
         switch (patrm)
         {
             case Patrn.Leit://左 -> 中
@@ -81,6 +111,7 @@ public class SceneSelect : MonoBehaviour
                 feadSC.fade("credit");
                 break;
         }
+        */
 
     }
 
