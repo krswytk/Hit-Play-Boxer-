@@ -26,11 +26,9 @@ public class MainManeger : MonoBehaviour
     PunchDetection PD;//パンチの取得
     MotherHund MH;//妨害の発生
     Clock C;//時計の表示の発生
-
+    SlotManeger SM;//スロット系の管理
 
     public int Money;//残金　購入できる上限
-
-    private bool SSW;//シーン遷移の管理スイッチ　trueで移動する
 
     private const int StartMoney = 3000;//最初の所持金
 
@@ -47,12 +45,22 @@ public class MainManeger : MonoBehaviour
 
     private bool sw;
 
+    private enum Stage
+    {
+        Lot = 1,//ルーレットフェーズ
+        Main = 2//食材獲得フェーズ
+    }
+
+    Stage _Stage;
+
     // Start is called before the first frame update
     void Start()
     {
 
         _AudioSource = GetComponent<AudioSource>();
         Money = StartMoney;
+
+        _Stage = Stage.Lot;
 
         CreateClassStart();//食材クラスと料理クラスの生成
         Debug.Log("クラスの生成完了");
@@ -83,16 +91,65 @@ public class MainManeger : MonoBehaviour
         C = GetComponent<Clock>();//時計の表示スクリプトを取得
         C.TimerSetUp(LimitTime);
 
+        SM = GetComponent<SlotManeger>();//時計の表示スクリプトを取得
+        SM.SlotSetUp(CC);
 
-        SSW = false;
         //Debug.Log(t[1]);
         sw = true;
 
         Timer = 0;
         MotherHundCoolTime = 5.5f;//ここは絶対に.5であること
     }
-    
-    void Update()
+    private void Update()//即時に判断が必要なものはこっちに
+    {
+
+        switch (_Stage)
+        {
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Lot:
+
+                break;
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Main:
+
+                Timer += Time.deltaTime;
+                //食材強奪の部分
+                MotherHundCoolTime -= Time.deltaTime;
+                if (MotherHundCoolTime < 0)
+                {
+                    MH.MagicHund(Random.Range(0, 3), Random.Range(0, 2));//ｘ０－２ ｙ０－１
+                    MotherHundCoolTime = MotherHundCoolTimeMax;
+                }
+
+                C.ClockMove(Timer);//時計を動かす
+
+                if (LimitTime <= Timer)//制限時間を超えたら
+                {
+                    Risult();
+                }
+
+                //Debug.Log("Money = " + Money);
+
+                if (Money <= 0)
+                {            //シーン移動の処理はここでのみ行う
+                    Risult();
+                }
+#if UNITY_EDITOR
+                if (Input.GetKeyDown(KeyCode.L))//デバッグ用チートコマンド
+                {
+                    Money = 1;
+                }
+#endif
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            default: Debug.LogError("メインのUpdateでエラー"); break;
+
+        }
+
+    }
+
+    private void FixedUpdate()//落下などの一定の処理速度を要求するものはこっちに
     {
         //Debug.Log(Money[0]);
         //0-2 RSLでも可
@@ -116,39 +173,27 @@ public class MainManeger : MonoBehaviour
         }
         *///PDの方に移植したため削除 場合によってはPDを削除して復活
 
-        Timer += Time.deltaTime;
-        //食材強奪の部分
-        MotherHundCoolTime -= Time.deltaTime;
-        if(MotherHundCoolTime < 0)
+
+
+        switch (_Stage)
         {
-            MH.MagicHund(Random.Range(0, 3), Random.Range(0, 2));//ｘ０－２ ｙ０－１
-            MotherHundCoolTime = MotherHundCoolTimeMax;
-        }
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Lot:
 
-        C.ClockMove(Timer);//時計を動かす
+                SM.SlotOn();//ルーレットの回転
+                break;
 
-        if(LimitTime <= Timer)//制限時間を超えたら
-        {
-            Risult();
-        }
-
-        Debug.Log("Money = " + Money);
-
-        if (Money <= 0)
-        {            //シーン移動の処理はここでのみ行う
-            Risult();
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Main:
+                TIB.RollmageBox();//ImageBoxを移動させる
+                break;
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            default:Debug.LogError("メインのFixdでエラー"); break;
         }
 
 
 
-        TIB.RollmageBox();//ImageBoxを移動させる
 
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.L))//デバッグ用チートコマンド
-        {
-            Money = 1;
-        }
-#endif
 
     }
 
@@ -196,6 +241,7 @@ public class MainManeger : MonoBehaviour
     {
         if (sw)
         {
+            Debug.Log("リザルトに遷移");
             _AudioSource.PlayOneShot(_AudioClip);
             SceneManager.sceneLoaded += GameSceneLoadedMain;
             feadSC.fade("Risult");

@@ -36,6 +36,7 @@ public class CoinManeger : MonoBehaviour
         per = Money / (StartMoney * 1.0f);
         CoinShadow.fillAmount = 1 - per;
         //Debug.Log("Money =" + Money);
+        if (Money < 0) Money = 0;
         Money_Text.text = String.Format("{0:#,0}", Money);
     }
 }

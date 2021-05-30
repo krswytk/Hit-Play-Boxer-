@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class feadSC : MonoBehaviour
-{
+{//キャンパスの生成から行った方がいい
     [SerializeField] public static GameObject fadeimage;
     private static GameObject F;
     // Start is called before the first frame update
