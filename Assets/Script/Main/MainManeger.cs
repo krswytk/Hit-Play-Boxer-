@@ -65,13 +65,15 @@ public class MainManeger : MonoBehaviour
         CreateClassStart();//食材クラスと料理クラスの生成
         Debug.Log("クラスの生成完了");
 
-        DecisionCooking();//作る料理の決定
-        Debug.Log("作る料理の決定完了");
+        RC = GetComponent<RandomCuisine>();
+        //DecisionCooking();//作る料理の決定
+        //Debug.Log("作る料理の決定完了");
 
         CreateImageBox();//動かすImageBoxの生成
         Debug.Log("ImageBoxの生成完了");
 
 
+        GF = GetComponent<GetFood>();
 
         TIB = GetComponent<TransformImageBox>();//食材移動ｓｃｒｉｐｔを取得
         TIB.SetUp(ImageBox, FS);
@@ -79,9 +81,6 @@ public class MainManeger : MonoBehaviour
 
         //Money_int = TIB.Money_int;
 
-        GF = GetComponent<GetFood>();
-        GF.SetUP(ImageBox, CC, FS, Money, Money_int, StartMoney);//初期設定および変数の参照渡し
-        Debug.Log("食材取得の準備完了");
 
         PD = GetComponent<PunchDetection>();//パンチを取得
 
@@ -103,6 +102,14 @@ public class MainManeger : MonoBehaviour
     private void Update()//即時に判断が必要なものはこっちに
     {
 
+        Timer += Time.deltaTime;
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.G))//デバッグ用チートコマンド
+        {
+            _Stage = Stage.Main;
+        }
+#endif
+
         switch (_Stage)
         {
             ///////////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +120,6 @@ public class MainManeger : MonoBehaviour
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Main:
 
-                Timer += Time.deltaTime;
                 //食材強奪の部分
                 MotherHundCoolTime -= Time.deltaTime;
                 if (MotherHundCoolTime < 0)
@@ -135,12 +141,6 @@ public class MainManeger : MonoBehaviour
                 {            //シーン移動の処理はここでのみ行う
                     Risult();
                 }
-#if UNITY_EDITOR
-                if (Input.GetKeyDown(KeyCode.L))//デバッグ用チートコマンド
-                {
-                    Money = 1;
-                }
-#endif
                 break;
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
             default: Debug.LogError("メインのUpdateでエラー"); break;
@@ -218,7 +218,6 @@ public class MainManeger : MonoBehaviour
 
     private void DecisionCooking()//作る料理の決定
     {
-        RC = GetComponent<RandomCuisine>();
         RC.RandomCuisineStart(CC, t);//今回殴り作る料理の決定と画面の料理を更新
         //Debug.Log(t[0] + "" + t[1] + "" + t[2]);
         t = RC.ReturnT();
@@ -263,4 +262,37 @@ public class MainManeger : MonoBehaviour
         SceneManager.sceneLoaded -= GameSceneLoadedMain;
     }
 
+    public void Panc(int x ,int power)
+    {
+        switch (_Stage)
+        {
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Lot:
+                t = SM.Select();
+                _Stage = Stage.Main;
+                GF.SetUP(ImageBox, CC, FS, Money, Money_int, StartMoney);//初期設定および変数の参照渡し
+                Debug.Log("食材取得の準備完了");
+                RC.CookingDisplay(CC, t);
+                break;
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Main:
+                switch (x){
+                    case 0:
+                        GF.Get(0, power);
+                        break;
+                    case 1:
+                        GF.Get(1, power);
+                        break;
+                    case 2:
+                        GF.Get(2, power);
+                        break;
+                    default: Debug.LogError("メインのパンチ取得でエラー"); break;
+                }
+                break;
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            default: Debug.LogError("パンチステージでエラー"); break;
+        }
+
+    }
 }

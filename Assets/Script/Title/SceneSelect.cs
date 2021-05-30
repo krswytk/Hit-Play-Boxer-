@@ -9,6 +9,9 @@ public class SceneSelect : MonoBehaviour
     private Color Choice, NoChoice;
     private Image[] PanchImage;
     private Animator PnchAnimOb;
+    
+    AudioSource audioSource;
+    [SerializeField] AudioClip PanchSE;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,19 +22,29 @@ public class SceneSelect : MonoBehaviour
         NoChoice = new Color(0.5f, 0.5f, 0.5f, 1.0f);
         */
 
+        /*
         PanchImage = new Image[3];
         PanchImage[0] = GameObject.Find("Green").GetComponent<Image>();
         PanchImage[1] = GameObject.Find("Red").GetComponent<Image>();
         PanchImage[2] = GameObject.Find("Yellow").GetComponent<Image>();
 
         PnchAnimOb = GameObject.Find("pnch").GetComponent<Animator>();
-        colorChange();
+        */
+        //colorChange();
     }
+
     public enum Patrn
     {
         Leit = 0,
         Sentr = 1,
         Right = 2
+    }
+
+    public void Panch()
+    {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(PanchSE);
+        feadSC.fade("Main");
     }
 
 

@@ -85,7 +85,7 @@ public class GetFood : MonoBehaviour
     private int ynum = 0;//縦のどこを取得するか格納しておく変数
 
     //野菜を取得した際に呼び出す関数
-    public void Get(int x,int y)
+    public void Get(int x,int y)//xは横の位置 yはパンチの強さ つまり高さ
     {
         switch (y)
         {

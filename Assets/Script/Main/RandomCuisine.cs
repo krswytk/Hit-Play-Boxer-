@@ -45,6 +45,15 @@ public class RandomCuisine : MonoBehaviour//制作する料理をランダムで
         }
         //Debug.Log(t[0] + "" + t[1] + "" + t[2]);
     }
+    public void CookingDisplay(CuisineClass[] CC, int[] t)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Image image = GameObject.Find("Cook" + (i + 1)).GetComponent<Image>();//料理欄の料理オブジェクトを右から順に取得する
+            image.sprite = CC[t[i]].CuisineMaterial;
+        }
+        //Debug.Log(t[0] + "" + t[1] + "" + t[2]);
+    }
 
     public int[] ReturnT()
     {

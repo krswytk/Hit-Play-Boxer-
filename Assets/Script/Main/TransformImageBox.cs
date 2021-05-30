@@ -13,12 +13,10 @@ public class TransformImageBox : MonoBehaviour
     Text[,] _Text;
     //public int[,] Money_int;
 
-
-
     Vector2 V2;
 
     private bool sw = true;
-    public float speed = 1;
+    private float speed = 3.0f;
     private int Foodnum;//食材の数を格納
     
 

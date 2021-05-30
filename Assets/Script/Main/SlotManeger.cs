@@ -7,6 +7,7 @@ public class SlotManeger : MonoBehaviour
 {
     CuisineClass[] CC;//料理と食材をまとめて格納するクラス
 
+    GameObject Canvas;//ルーレットが乗っているキャンバス
 
     GameObject SlotBer;//生成するプレハブオブジェクトバー
 
@@ -48,7 +49,7 @@ public class SlotManeger : MonoBehaviour
         SlotBer = Resources.Load("Prefab/SlotBer") as GameObject;
         Bers = GameObject.Find("BeasBer");//これを回転されると枠もそろって回転する ただし料理は別で回さないと上下左右がおかしくなる。
         CCImagePrent = GameObject.Find("CCImagePrent");//これを回転されると枠もそろって回転する ただし料理は別で回さないと上下左右がおかしくなる。
-
+        Canvas  = GameObject.Find("LotCanvas");//ルーレットが乗っているキャンバス
     }
 
 
@@ -93,7 +94,7 @@ public class SlotManeger : MonoBehaviour
             CCImage_Image[i].color = new Color(1,1,1,1);//色を白に変更
 
             rad = ((RotateNum * i) + (RotateNum / 2)) * Mathf.Deg2Rad;//対応したラジアンを求める
-            Debug.Log("角度 = " + ((RotateNum * i) + (RotateNum / 2)) + " \nx =" + Mathf.Cos(rad) + " \ny =" + Mathf.Sin(rad));
+            //Debug.Log("角度 = " + ((RotateNum * i) + (RotateNum / 2)) + " \nx =" + Mathf.Cos(rad) + " \ny =" + Mathf.Sin(rad));
             CCImage_RectTransform[i].anchoredPosition = new Vector3(Mathf.Cos(rad) * CCImageRadLong, Mathf.Sin(rad) * CCImageRadLong, 0f);//円状に画像位置を変更
         }
     }
@@ -111,6 +112,38 @@ public class SlotManeger : MonoBehaviour
             //Debug.Log("角度 = " + ((RotateNum * i) + (RotateNum / 2)) + " \nx =" + Mathf.Cos(rad) + " \ny =" + Mathf.Sin(rad));
             CCImage_RectTransform[i].anchoredPosition = new Vector3(Mathf.Cos(rad) * CCImageRadLong, Mathf.Sin(rad) * CCImageRadLong, 0f);//円状に画像位置を変更
         }
+    }
+
+    int[] t; 
+    public int[] Select()//メインからパンチで決定したときに呼び出される
+    {
+        t = new int[3];
+        //止まった場所の食材を割り出す90,210,330度の場所にある食材
+        for (int i = 0; i < CCNum; i++)
+        {
+            float rot = ((RotateNum * i) + (RotateNum / 2) + MainRotate);
+            if (rot > 360) rot = rot - 360;
+
+            //.Log("i  = " + i + " 角度は"+ ((RotateNum * i) + (RotateNum / 2) + MainRotate));
+            if ((90 - (RotateNum / 2)) <rot && rot < (90 + (RotateNum / 2)))
+            {
+                //Debug.Log("t0 = "+rot);
+                t[0] = i;
+            }
+            if ((210 - (RotateNum / 2)) < rot && rot < (210 + (RotateNum / 2)))
+            {
+                //Debug.Log("t1 = " + rot);
+                t[1] = i;
+            }
+            if ((330 - (RotateNum / 2)) < rot && rot < (330 + (RotateNum / 2)))
+            {
+                //Debug.Log("t2 = " + rot);
+                t[2] = i;
+            }
+        }
+        //Debug.Log("t[0] = " + t[0]+ "  t[1] = " + t[1]+ "  t[2] = " + t[2]);
+        Canvas.SetActive(false);
+        return t;
     }
 
 }

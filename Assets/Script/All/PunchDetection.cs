@@ -12,7 +12,7 @@ public class PunchDetection : MonoBehaviour
     //tirle
     SceneSelect SS;
     //main
-    GetFood GF;
+    MainManeger MM;
     //risult
     RTitleGo RTG;
     //credit
@@ -32,7 +32,7 @@ public class PunchDetection : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "main")
         {
             Scenenum = 1;
-            GF = GetComponent<GetFood>();
+            MM = GetComponent<MainManeger>();
         }
         if (SceneManager.GetActiveScene().name == "Risult")
         {
@@ -143,16 +143,19 @@ public class PunchDetection : MonoBehaviour
         }
     }
 
+    /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     void PunchL()
     {
         switch (Scenenum)
         {
             case 0: //タイトルの場合
-                SS.SelectL();
+                SS.Panch();
                 break;
 
             case 1:  //メインの場合
-                GF.Get(0,power);
+                MM.Panc(0,power);
                 break; 
 
             case 2:  //リザルトの場合
@@ -175,11 +178,11 @@ public class PunchDetection : MonoBehaviour
         switch (Scenenum)
         {
             case 0: //タイトルの場合
-                SS.SelectS();
+                SS.Panch();
                 break;
 
             case 1:  //メインの場合
-                GF.Get(1, power);
+                MM.Panc(1,power);
                 break;
 
             case 2:  //リザルトの場合
@@ -202,11 +205,11 @@ public class PunchDetection : MonoBehaviour
         switch (Scenenum)
         {
             case 0: //タイトルの場合
-                SS.SelectR();
+                SS.Panch();
                 break;
 
             case 1:  //メインの場合
-                GF.Get(2, power);
+                MM.Panc(2,power);
                 break;
 
             case 2:  //リザルトの場合

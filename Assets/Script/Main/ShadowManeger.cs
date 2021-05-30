@@ -36,6 +36,7 @@ public class ShadowManeger : MonoBehaviour
             Debug.LogError("影の取得または料理の配列取得に失敗しました。");
             return;
         }
+        //Debug.Log("食材に影を反映ShadowManegerSetUP完了");
     }
 
     int lp;
