@@ -99,6 +99,7 @@ public class MainManeger : MonoBehaviour
         SM.SlotSetUp(CC);
 
         TM = GetComponent<TutorialManeger>();//チュートリアル表示管理スクリプトを取得
+        TM.TutorialSetUp((int)LimitTime, StartMoney, TutorialTimerMax);
 
         //Debug.Log(t[1]);
         sw = true;
@@ -138,9 +139,11 @@ public class MainManeger : MonoBehaviour
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Tutorial:
                 TutorialTimer += Time.deltaTime;
+                TM.TutorialSlipCountText(TutorialTimer);
                 if (TutorialTimer > TutorialTimerMax)
                 {
-                    TM.TutorialNext();
+                    //Debug.Log(TM.TutorialNext());
+                    if (TM.TutorialNext()) _Stage = Stage.Main;
                     TutorialTimer = 0;
                 }
                 break;
@@ -301,6 +304,7 @@ public class MainManeger : MonoBehaviour
             case Stage.Lot:
                 t = SM.Select();
                 _Stage = Stage.Tutorial;
+                TM.TutorialNext();
                 GF.SetUP(ImageBox, CC, FS, Money, Money_int, StartMoney);//初期設定および変数の参照渡し
                 Debug.Log("食材取得の準備完了");
                 RC.CookingDisplay(CC, t);
@@ -308,8 +312,8 @@ public class MainManeger : MonoBehaviour
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Tutorial:
-                TM.TutorialNext();
-                _Stage = Stage.Main;
+                TutorialTimer = 0;//右下タイマーの時間を初期化
+                if (TM.TutorialNext()) _Stage = Stage.Main;
                 break;
 
             ///////////////////////////////////////////////////////////////////////////////////////////
