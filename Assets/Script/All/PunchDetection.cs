@@ -51,20 +51,52 @@ public class PunchDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+
+            Punch(0,0);
+
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Punch(1,0);
+
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Punch(2,0);
+
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+
+            Punch(0,1);
+
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Punch(1,1);
+
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Punch(2,1);
+
+        }
         if (Input.GetKeyDown(KeyCode.Z))
         {
 
-            Punch(0);
+            Punch(0,2);
 
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Punch(1);
+            Punch(1,2);
 
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Punch(2);
+            Punch(2,2);
 
         }
     }

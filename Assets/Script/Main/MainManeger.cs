@@ -27,6 +27,9 @@ public class MainManeger : MonoBehaviour
     MotherHund MH;//妨害の発生
     Clock C;//時計の表示の発生
     SlotManeger SM;//スロット系の管理
+    TutorialManeger TM;//スロット系の管理
+    private float TutorialTimer; 
+    private const float TutorialTimerMax = 3;
 
     public int Money;//残金　購入できる上限
 
@@ -44,11 +47,13 @@ public class MainManeger : MonoBehaviour
     public AudioClip _AudioClip;
 
     private bool sw;
+    
 
     private enum Stage
     {
         Lot = 1,//ルーレットフェーズ
-        Main = 2//食材獲得フェーズ
+        Tutorial = 2,//説明フェーズ
+        Main = 3//食材獲得フェーズ
     }
 
     Stage _Stage;
@@ -93,18 +98,31 @@ public class MainManeger : MonoBehaviour
         SM = GetComponent<SlotManeger>();//時計の表示スクリプトを取得
         SM.SlotSetUp(CC);
 
+        TM = GetComponent<TutorialManeger>();//チュートリアル表示管理スクリプトを取得
+
         //Debug.Log(t[1]);
         sw = true;
 
         Timer = 0;
         MotherHundCoolTime = 5.5f;//ここは絶対に.5であること
+        TutorialTimer = 0;
     }
+
+
     private void Update()//即時に判断が必要なものはこっちに
     {
 
         Timer += Time.deltaTime;
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.G))//デバッグ用チートコマンド
+        if (Input.GetKeyDown(KeyCode.B))//デバッグ用チートコマンド
+        {
+            _Stage = Stage.Lot;
+        }
+        if (Input.GetKeyDown(KeyCode.N))//デバッグ用チートコマンド
+        {
+            _Stage = Stage.Tutorial;
+        }
+        if (Input.GetKeyDown(KeyCode.M))//デバッグ用チートコマンド
         {
             _Stage = Stage.Main;
         }
@@ -115,6 +133,16 @@ public class MainManeger : MonoBehaviour
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Lot:
 
+                break;
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Tutorial:
+                TutorialTimer += Time.deltaTime;
+                if (TutorialTimer > TutorialTimerMax)
+                {
+                    TM.TutorialNext();
+                    TutorialTimer = 0;
+                }
                 break;
 
             ///////////////////////////////////////////////////////////////////////////////////////////
@@ -151,6 +179,7 @@ public class MainManeger : MonoBehaviour
 
     private void FixedUpdate()//落下などの一定の処理速度を要求するものはこっちに
     {
+        #region PuncTest
         //Debug.Log(Money[0]);
         //0-2 RSLでも可
         /*
@@ -172,6 +201,7 @@ public class MainManeger : MonoBehaviour
 
         }
         *///PDの方に移植したため削除 場合によってはPDを削除して復活
+        #endregion
 
 
 
@@ -184,17 +214,18 @@ public class MainManeger : MonoBehaviour
                 break;
 
             ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Tutorial:
+                
+                break;
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Main:
                 TIB.RollmageBox();//ImageBoxを移動させる
                 break;
             ///////////////////////////////////////////////////////////////////////////////////////////
             default:Debug.LogError("メインのFixdでエラー"); break;
         }
-
-
-
-
-
+        
     }
 
     private void CreateClassStart()//食材クラスと料理クラスの生成
@@ -269,10 +300,16 @@ public class MainManeger : MonoBehaviour
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Lot:
                 t = SM.Select();
-                _Stage = Stage.Main;
+                _Stage = Stage.Tutorial;
                 GF.SetUP(ImageBox, CC, FS, Money, Money_int, StartMoney);//初期設定および変数の参照渡し
                 Debug.Log("食材取得の準備完了");
                 RC.CookingDisplay(CC, t);
+                break;
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            case Stage.Tutorial:
+                TM.TutorialNext();
+                _Stage = Stage.Main;
                 break;
 
             ///////////////////////////////////////////////////////////////////////////////////////////
