@@ -373,6 +373,7 @@ public class MainManeger : MonoBehaviour
                         break;
                     default: Debug.LogError("メインのパンチ取得でエラー"); break;
                 }
+                checkCCPer();
                 break;
             ///////////////////////////////////////////////////////////////////////////////////////////
             default: Debug.LogError("パンチステージでエラー"); break;
@@ -396,5 +397,21 @@ public class MainManeger : MonoBehaviour
         TIB.SpecialSaleEnd();
         SpecialSaleText.SetActive(false);
 
+    }
+
+    private void checkCCPer()//食材をすべて獲得したかどうかの確認していた場合リザルトに遷移
+    {
+        for(int i = 0; i < t.Length; i++)
+        {
+            for (int l = 0; l < CC[t[i]].FoodCheck.Length; l++)
+            {
+                if (CC[t[i]].FoodCheck[l] == false)
+                {
+                    Debug.Log(CC[t[i]].CuisineName+" の "+ CC[t[i]].Name[l] +" がない");
+                    return;
+                }
+            }
+        }
+        Risult();
     }
 }

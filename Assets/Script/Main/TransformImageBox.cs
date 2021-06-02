@@ -101,7 +101,7 @@ public class TransformImageBox : MonoBehaviour
     void InputBox(int x,int y)//上に移動したBoxにアイテムを入れ込む//recttransform[x, y]にランダムに素材画像を入れる//食材クラスから金額を取得　ランダムに入れ込む
         //すべての食材から表示する食材をランダムで決定する。
     {
-        int num = Random.Range(0, FS.Length - 1);//Random.Rangeはintの場合（以上　以下）で値が返る//表示する食材の決定
+        int num = Random.Range(0, FS.Length);//Random.Rangeはintの場合（以上　以下）で値が返る//表示する食材の決定
 
         //Boxの中身の入れ替え処理
         try{

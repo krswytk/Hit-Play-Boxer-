@@ -15,7 +15,7 @@ public class TutorialManeger : MonoBehaviour
     Text MainText;//献立を確認
     Text NextCount;//献立を確認
 
-    string[] TutorialText = { "献立を確認", "献立に使う食材を予想", "使う食材を殴れ", "制限時間は24時間", "針は0時からスタート", "所持金は3000円だ！", "14時と20時から特売", "ゲームスタート！",""};
+    string[] TutorialText = { "献立を確認", "献立に使う食材を予想", "使う食材を殴れ", "制限時間は24時間", "針は0時からスタート", "所持金は3000円だ！", "お金は残した方がいいぞ", "14時と20時から特売", "ゲームスタート！",""};
 
     int LimitTime, LimitMonty,count;
     float SkipTime;
@@ -69,14 +69,16 @@ public class TutorialManeger : MonoBehaviour
                 break;
             case 5://所持金は3000円だ
                 LimitTImeElipse.SetActive(false);//時間OFF
-                LimitMoneyElipse.SetActive(true);//所持金ON
+                LimitMoneyElipse.SetActive(true);
                 break;
-            case 6://14時と20時から特売
+            case 6://お金は残した方がいいぞ
                 break;
-            case 7://ゲームスタート
+            case 7://14時と20時から特売
+                break;
+            case 8://ゲームスタート
                 LimitMoneyElipse.SetActive(false);//所持金OFF
                 break;
-            case 8:
+            case 9:
                 GameStartText.SetActive(false);//チュートリアル全体表示OFF
                 break;
             default: Debug.LogError("チュートリアルネクスト場合分けでエラー"); break;
