@@ -111,7 +111,7 @@ public class GetFood : MonoBehaviour
                         //Debug.Log(int.Parse(ImageBox[x, i].name));
                         num = int.Parse(ImageBox[x, i].name);
                         FS[num].GetFood();//食材を取得したことにして数を増やす
-                        Money -= FS[num].NowMoney;//所持金から値段をマイナスする
+                        Money -= Money_int[x,i];//所持金から値段をマイナスする
                         SM.GetCuisineCheck(num);
                         ImageBox[x, i].SetActive(false);//取得したオブジェクトを非表示に
                     }
@@ -176,8 +176,9 @@ public class GetFood : MonoBehaviour
         }
     }
 
-
-
-
-
+    public int ReturnMonty()
+    {
+        if (Money < 0) return 0;
+        return Money;
+    }
 }

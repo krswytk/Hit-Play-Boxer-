@@ -9,13 +9,15 @@ public class CuisineClass//料理本体と必要素材を格納するクラス
     public string[] Name { get; private set; }//食材の名前を配列で格納
     public Sprite CuisineMaterial { get; private set; }//料理の画像を格納
     public Sprite[] Material { get; private set; }//食材の画像を格納
-    public bool[] FoodCheck { get; private set; }//食材の画像を格納
+    public bool[] FoodCheck { get; private set; }//食材をゲットしたかどうか
+    public float Foodprt { get; private set; }//食材をゲットしたかどうか
 
 
     public CuisineClass(string[] Name, Sprite[] Material)//コンストラクタ
     {
         this.CuisineName = Name[0];
         this.CuisineMaterial = Material[0];
+        this.Foodprt = 0;
 
         if (Name.GetLength(0) == Material.GetLength(0))//料理食材のテクスト数と画像数が一致したら
         {
@@ -55,8 +57,14 @@ public class CuisineClass//料理本体と必要素材を格納するクラス
 
     public void GetFood(int num)
     {
-        FoodCheck[num] = true;
-        Debug.Log(CuisineName + "の" + Name[num] + "を入手しました。");
+        if (FoodCheck[num] == false) Foodprt++;//未入手だったら 食材入手数を1つ増やす
+         FoodCheck[num] = true;
+        //Debug.Log(CuisineName + "の" + Name[num] + "を入手しました。");
+    }
+
+    public float GetPer()
+    {
+        return Foodprt / Name.Length * 100;
     }
 }
 

@@ -29,7 +29,7 @@ public class FoodNum : MonoBehaviour
 
         //動かないからとりあえず首 publicで直接入力
         //LoadIrast();
-        Debug.Log("イラストロード");
+        //Debug.Log("イラストロード");
 
         GetOB();//入れるためのゲームオブジェクトを取得
         Debug.Log("ゲームオブジェクトを取得");
@@ -77,10 +77,12 @@ public class FoodNum : MonoBehaviour
     //食材の名前と料理の名前が一致する
     public void ChangeImage(CuisineClass[] CC, Foodstuff[] FS, int[] t)
     {
+        /*
         Debug.Log("Food.GetLength(0) =" + Food.GetLength(0));
         Debug.Log("Food.GetLength(1) =" + Food.GetLength(1));
         Debug.Log("FS.GetLength(0) =" + FS.GetLength(0));
         Debug.Log("t =" + t.GetLength(0));
+        */
         //x列分回す 0,1,2
         for (int i = 0; i < Food.GetLength(0); i++)
         {

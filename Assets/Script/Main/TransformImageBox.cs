@@ -11,6 +11,7 @@ public class TransformImageBox : MonoBehaviour
     Image[,] _Image;
     GameObject[,] ImageBox;
     Text[,] _Text;
+    int[,] Money_int;
     //public int[,] Money_int;
 
     Vector2 V2;
@@ -18,17 +19,21 @@ public class TransformImageBox : MonoBehaviour
     private bool sw = true;
     private float speed = 3.0f;
     private int Foodnum;//食材の数を格納
-    
+
+    private bool SpecialSale;
+
+
 
     Foodstuff[] FS;
 
-    public void SetUp(GameObject[,] ImageBox, Foodstuff[] FS)
+    public void SetUp(GameObject[,] ImageBox, Foodstuff[] FS,int[,] Money_int)
     {
         if (sw)
         {
             this.FS = FS;
             //Debug.Log(FS[0].Name);
             this.ImageBox = ImageBox;
+            this.Money_int = Money_int;
 
             _RectTransform = new RectTransform[ImageBox.GetLength(0), ImageBox.GetLength(1)];//配列の初期化
             _Image = new Image[ImageBox.GetLength(0), ImageBox.GetLength(1)];
@@ -49,6 +54,7 @@ public class TransformImageBox : MonoBehaviour
                 }
             }
 
+            SpecialSale = false;
             sw = false;
         }
 
@@ -106,7 +112,15 @@ public class TransformImageBox : MonoBehaviour
             */
             ImageBox[x, y].name = num.ToString();//食材の配列番号を名前にする
             _Image[x, y].sprite = FS[num].Material;//FSの該当番号の画像を入れる
-            _Text[x, y].text = FS[num].NowMoney.ToString("N0");//金額を金額テキストに入れる
+            if (SpecialSale)
+            {
+                Money_int[x, y] = FS[num].NowMoney / 2;//特売であれば50%で販売
+            }
+            else
+            {
+                Money_int[x, y] = FS[num].NowMoney;//特売でなければそのままの値段
+            }
+            _Text[x, y].text = Money_int[x, y].ToString("N0");//金額を金額テキストに入れる
 
         }
         catch
@@ -114,5 +128,19 @@ public class TransformImageBox : MonoBehaviour
             Debug.Log("食材:" + FS[num-1].Name + "と" + FS[num + 1].Name + " のあいだがエラーです。");
         }
     }
+
+    /// <summary>
+    /// 特売の管理関数
+    /// </summary>
+    /// <returns></returns>
+    public void SpecialSaleStart()
+    {
+        SpecialSale = true;
+    }
+    public void SpecialSaleEnd()
+    {
+        SpecialSale = false;
+    }
+
 
 }

@@ -28,7 +28,7 @@ public class MainManeger : MonoBehaviour
     Clock C;//時計の表示の発生
     SlotManeger SM;//スロット系の管理
     TutorialManeger TM;//スロット系の管理
-    private float TutorialTimer; 
+    private float TutorialTimer;
     private const float TutorialTimerMax = 3;
 
     public int Money;//残金　購入できる上限
@@ -36,7 +36,7 @@ public class MainManeger : MonoBehaviour
     private const int StartMoney = 3000;//最初の所持金
 
 
-    private float LimitTime = 60f;
+    private float LimitTime = 120f;
     private float Timer;
 
     private float MotherHundCoolTime;
@@ -45,9 +45,12 @@ public class MainManeger : MonoBehaviour
 
     AudioSource _AudioSource;
     public AudioClip _AudioClip;
+    [SerializeField] private GameObject SpecialSaleText;
 
     private bool sw;
-    
+    private bool StartMainSw;
+    private bool[] SpecialSaleSw;
+
 
     private enum Stage
     {
@@ -64,6 +67,7 @@ public class MainManeger : MonoBehaviour
 
         _AudioSource = GetComponent<AudioSource>();
         Money = StartMoney;
+        SpecialSaleText.SetActive(false);
 
         _Stage = Stage.Lot;
 
@@ -74,14 +78,15 @@ public class MainManeger : MonoBehaviour
         //DecisionCooking();//作る料理の決定
         //Debug.Log("作る料理の決定完了");
 
-        CreateImageBox();//動かすImageBoxの生成
+        CreateImageBox();//動かすImageBoxの生成//ImageBox初期化処理
         Debug.Log("ImageBoxの生成完了");
 
 
         GF = GetComponent<GetFood>();
 
+        Money_int = new int[ImageBox.GetLength(0), ImageBox.GetLength(1)];
         TIB = GetComponent<TransformImageBox>();//食材移動ｓｃｒｉｐｔを取得
-        TIB.SetUp(ImageBox, FS);
+        TIB.SetUp(ImageBox, FS, Money_int);
         Debug.Log("食材移動の準備完了");
 
         //Money_int = TIB.Money_int;
@@ -103,6 +108,10 @@ public class MainManeger : MonoBehaviour
 
         //Debug.Log(t[1]);
         sw = true;
+        StartMainSw = true;
+        SpecialSaleSw = new bool[2];
+        SpecialSaleSw[0] = true;
+        SpecialSaleSw[1] = true;
 
         Timer = 0;
         MotherHundCoolTime = 5.5f;//ここは絶対に.5であること
@@ -150,19 +159,42 @@ public class MainManeger : MonoBehaviour
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Main:
-
                 //食材強奪の部分
+                if (StartMainSw)
+                {
+                    Timer = 0f;//タイマーを初期化
+                    StartMainSw = false;
+                }
                 MotherHundCoolTime -= Time.deltaTime;
                 if (MotherHundCoolTime < 0)
                 {
                     MH.MagicHund(Random.Range(0, 3), Random.Range(0, 2));//ｘ０－２ ｙ０－１
                     MotherHundCoolTime = MotherHundCoolTimeMax;
                 }
+                //Debug.Log(Timer);
+                if(Timer  > 70f)//13時-15
+                {
+                    if (SpecialSaleSw[0])
+                    {
+                        SpecialSale();//10秒間特売を行う
+                        SpecialSaleSw[0] = false;
+                    }
+                }
+                if (Timer > 100f)//20時-22
+                {
+                    if (SpecialSaleSw[1])
+                    {
+                        SpecialSale();//10秒間特売を行う
+                        SpecialSaleSw[1] = false;
+                    }
+                }
+
 
                 C.ClockMove(Timer);//時計を動かす
 
                 if (LimitTime <= Timer)//制限時間を超えたら
                 {
+                    Timer -= Time.deltaTime;
                     Risult();
                 }
 
@@ -170,6 +202,7 @@ public class MainManeger : MonoBehaviour
 
                 if (Money <= 0)
                 {            //シーン移動の処理はここでのみ行う
+                    Timer -= Time.deltaTime;
                     Risult();
                 }
                 break;
@@ -206,6 +239,7 @@ public class MainManeger : MonoBehaviour
         *///PDの方に移植したため削除 場合によってはPDを削除して復活
         #endregion
 
+        TIB.RollmageBox();//ImageBoxを移動させる
 
 
         switch (_Stage)
@@ -218,17 +252,16 @@ public class MainManeger : MonoBehaviour
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Tutorial:
-                
+
                 break;
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Main:
-                TIB.RollmageBox();//ImageBoxを移動させる
                 break;
             ///////////////////////////////////////////////////////////////////////////////////////////
-            default:Debug.LogError("メインのFixdでエラー"); break;
+            default: Debug.LogError("メインのFixdでエラー"); break;
         }
-        
+
     }
 
     private void CreateClassStart()//食材クラスと料理クラスの生成
@@ -288,7 +321,10 @@ public class MainManeger : MonoBehaviour
         //遷移後のリザルトのマネージャーscriptを取得
         RisultManeger RM = GameObject.Find("Main Camera").GetComponent<RisultManeger>();
 
-        RM.StertSetUP(CC,FS,t);
+        float MoneyPer = GF.ReturnMonty() * 1.0f / StartMoney * 100f;//残金率
+        float TimePer = Timer * 1.0f / LimitTime * 100f;//残り時間率
+
+        RM.StertSetUP(CC, FS, t, MoneyPer, TimePer);
 
 
         Debug.Log("シーン遷移完了");
@@ -296,13 +332,14 @@ public class MainManeger : MonoBehaviour
         SceneManager.sceneLoaded -= GameSceneLoadedMain;
     }
 
-    public void Panc(int x ,int power)
+    public void Panc(int x, int power)
     {
         switch (_Stage)
         {
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Lot:
                 t = SM.Select();
+                _AudioSource.Play();
                 _Stage = Stage.Tutorial;
                 TM.TutorialNext();
                 GF.SetUP(ImageBox, CC, FS, Money, Money_int, StartMoney);//初期設定および変数の参照渡し
@@ -313,12 +350,18 @@ public class MainManeger : MonoBehaviour
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Tutorial:
                 TutorialTimer = 0;//右下タイマーの時間を初期化
-                if (TM.TutorialNext()) _Stage = Stage.Main;
+                _AudioSource.Play();
+                if (TM.TutorialNext())
+                {
+                    _Stage = Stage.Main;
+                }
+
                 break;
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             case Stage.Main:
-                switch (x){
+                switch (x)
+                {
                     case 0:
                         GF.Get(0, power);
                         break;
@@ -334,6 +377,24 @@ public class MainManeger : MonoBehaviour
             ///////////////////////////////////////////////////////////////////////////////////////////
             default: Debug.LogError("パンチステージでエラー"); break;
         }
+
+    }
+
+    public void SpecialSale()
+    {
+        TIB.SpecialSaleStart();
+        StartCoroutine(DelayCoroutine());
+        SpecialSaleText.SetActive(true);
+    }
+    private IEnumerator DelayCoroutine()//コルーチン本体
+    {
+        transform.position = Vector3.one;
+
+        // 10秒間待つ
+        yield return new WaitForSeconds(10);
+
+        TIB.SpecialSaleEnd();
+        SpecialSaleText.SetActive(false);
 
     }
 }

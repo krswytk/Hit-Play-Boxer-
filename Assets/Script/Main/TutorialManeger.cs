@@ -8,13 +8,14 @@ public class TutorialManeger : MonoBehaviour
     GameObject GameStartText;
 
     GameObject CookElipse;//献立強調の赤丸
-    GameObject LimitTImeElipse;//献立強調の赤丸
-    GameObject LimitMoneyElipse;//献立強調の赤丸
+    GameObject GetFoodElipse;//獲得場所強調の赤丸
+    GameObject LimitTImeElipse;//制限時間強調の赤丸
+    GameObject LimitMoneyElipse;//所持金強調の赤丸
 
     Text MainText;//献立を確認
     Text NextCount;//献立を確認
 
-    string[] TutorialText = { "献立を確認", "使う食材を殴れ", "制限時間は120秒！", "所持金は3000円だ！", "では！", "ゲームスタート！",""};
+    string[] TutorialText = { "献立を確認", "献立に使う食材を予想", "使う食材を殴れ", "制限時間は24時間", "針は0時からスタート", "所持金は3000円だ！", "14時と20時から特売", "ゲームスタート！",""};
 
     int LimitTime, LimitMonty,count;
     float SkipTime;
@@ -25,6 +26,7 @@ public class TutorialManeger : MonoBehaviour
         GameStartText = GameObject.Find("GameStartText");
 
         CookElipse = GameObject.Find("CookElipse");
+        GetFoodElipse = GameObject.Find("GetFoodElipse");
         LimitTImeElipse = GameObject.Find("LimitTImeElipse");
         LimitMoneyElipse = GameObject.Find("LimitMoneyElipse");
         
@@ -36,8 +38,8 @@ public class TutorialManeger : MonoBehaviour
         this.SkipTime = SkipTime;
         count = 0;
 
-        TutorialText[2] = "制限時間は" + LimitTime.ToString() + "秒！";
-        TutorialText[3] = "所持金は" + LimitMonty.ToString() + "円だ！";
+        //TutorialText[3] = "制限時間は" + LimitTime.ToString() + "秒！";
+        TutorialText[5] = "所持金は" + LimitMonty.ToString() + "円だ！";
 
         Close();//オブジェクトを非表示にする。
     }
@@ -45,34 +47,42 @@ public class TutorialManeger : MonoBehaviour
     public bool TutorialNext()
     {
         MainText.text = TutorialText[count];
+        //"献立を確認", "献立に使う食材を予想", "使う食材を殴れ", "制限時間は120秒！", 
+        //"針が2周するまで", "所持金は3000円だ！", "14時と20時から特売", "ゲームスタート！"
         switch (count)
         {
             case 0://献立を確認
                 GameStartText.SetActive(true);//チュートリアル全体表示ON
                 CookElipse.SetActive(true);//献立ON
                 break;
-            case 1://使う食材を殴れ
+            case 1://献立に使う食材を予想
                 CookElipse.SetActive(false);//献立OFF
+                GetFoodElipse.SetActive(true);//食材ON
                 break;
-            case 2://制限時間は120秒
+            case 2://使う食材を殴れ
+                break;
+            case 3://制限時間は120秒
+                GetFoodElipse.SetActive(false);//食材OFF
                 LimitTImeElipse.SetActive(true);//時間ON
                 break;
-            case 3://所持金は3000円だ
-                LimitTImeElipse.SetActive(false);//献立OFF
+            case 4://針が2周するまで
+                break;
+            case 5://所持金は3000円だ
+                LimitTImeElipse.SetActive(false);//時間OFF
                 LimitMoneyElipse.SetActive(true);//所持金ON
                 break;
-            case 4://では
+            case 6://14時と20時から特売
+                break;
+            case 7://ゲームスタート
                 LimitMoneyElipse.SetActive(false);//所持金OFF
                 break;
-            case 5://ゲームスタート
-                break;
-            case 6:
+            case 8:
                 GameStartText.SetActive(false);//チュートリアル全体表示OFF
                 break;
             default: Debug.LogError("チュートリアルネクスト場合分けでエラー"); break;
         }
         count++;
-        Debug.Log(count +"  "+ TutorialText.Length);
+        //Debug.Log(count +"  "+ TutorialText.Length);
         if (count >= TutorialText.Length)
         {
             Debug.Log("チュートリアル終了");
@@ -91,6 +101,7 @@ public class TutorialManeger : MonoBehaviour
     public void Close()
     {
         CookElipse.SetActive(false);
+        GetFoodElipse.SetActive(false);
         LimitTImeElipse.SetActive(false);
         LimitMoneyElipse.SetActive(false);
         GameStartText.SetActive(false);

@@ -31,7 +31,7 @@ public class CookingDisplay : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("CookingDisplayでエラー");
+            //Debug.LogError("CookingDisplayでエラー");
         }
     }
 }

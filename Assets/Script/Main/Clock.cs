@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Clock : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class Clock : MonoBehaviour
     private float LongTimeper;
     private float ShotTimeper;
 
+    private float MinitPer;
+
+    private Text TimeText;
+    public GameObject TimeBaseAnim;
+
     // Start is called before the first frame update
     public void TimerSetUp(float LimitTime)
     {
@@ -26,16 +32,24 @@ public class Clock : MonoBehaviour
         LongTimeper = 0;
         ShotTimeper = 0;
 
+        MinitPer = Mathf.Floor(LimitTime / 60);
+
         /*//正確に取得できていないため上で直接入力
         ShotStartRotation = Shot.rotation.z;//短針の初期回転度を取得
         Debug.Log("ShotStartRotation =" + ShotStartRotation + " \n\r Shot.rotation.z =" + Shot.rotation.z);
         */
+        TimeText = GameObject.Find("TimeText").GetComponent<Text>();
+        //TimeBaseAnim = GameObject.Find("AnimBase").GetComponent<GameObject>();
+        //var t = TimeBaseAnim.GetComponent<RectTransform>();t.position = new Vector2(500,500);
+        TimeBaseAnim.SetActive(false);
     }
 
     // Update is called once per frame
     public void ClockMove(float Timer)
     {
-        per = Timer / (LimitTime/2);//時間の割合を求める
+        per = Timer / (LimitTime/ MinitPer);//時間の割合を求める
+        TimeText.text = Mathf.Floor(24 * (per / 2)).ToString();
+        if(24 * (per / 2) > 18) TimeBaseAnim.SetActive(true);
 
         //長針
         LongTimeper = 360 * per;

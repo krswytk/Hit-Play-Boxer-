@@ -33,7 +33,8 @@ public class Foodstuff : MonoBehaviour//各素材格納クラス
 
     public void GetFood()
     {
-        Debug.Log(Name + "ゲット" + Getnum + "個目");
+        //Debug.Log(Name + "ゲット" + Getnum + "個目");
         Getnum++;
     }
+    
 }

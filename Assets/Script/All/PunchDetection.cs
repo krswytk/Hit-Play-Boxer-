@@ -14,7 +14,7 @@ public class PunchDetection : MonoBehaviour
     //main
     MainManeger MM;
     //risult
-    RTitleGo RTG;
+    RisultManeger RM;
     //credit
     CTitleGo CTG;
 
@@ -37,7 +37,7 @@ public class PunchDetection : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Risult")
         {
             Scenenum = 2;
-            RTG = GetComponent<RTitleGo>();
+            RM = GetComponent<RisultManeger>();
 
         }
         if (SceneManager.GetActiveScene().name == "credit")
@@ -191,7 +191,7 @@ public class PunchDetection : MonoBehaviour
                 break; 
 
             case 2:  //リザルトの場合
-                RTG.downbutton();
+                RM.PanchRisult();
                 break;
 
             case 3:  //クレジットの場合
@@ -218,7 +218,7 @@ public class PunchDetection : MonoBehaviour
                 break;
 
             case 2:  //リザルトの場合
-                RTG.downbutton();
+                RM.PanchRisult();
                 break;
 
             case 3:  //クレジットの場合
@@ -245,7 +245,7 @@ public class PunchDetection : MonoBehaviour
                 break;
 
             case 2:  //リザルトの場合
-                RTG.downbutton();
+                RM.PanchRisult();
                 break;
 
             case 3:  //クレジットの場合
